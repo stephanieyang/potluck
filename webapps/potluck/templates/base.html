@@ -1,0 +1,33 @@
+<!-- base.html -->
+<!--
+For this we want:
+- Basic formatting/layout for main pages
+--- navigation bar
+----- link to other pages via url redirections (url 'pagename')
+----- see urls.py for url names (look at the name='XXX' argument)
+--- sidebar for food categories
+- Defined space for main content
+* If needed, refer to username instances via the variable {{userinfo.user.username}}
+
+Likely to be passed in:
+- userinfo (userinfo.user.username for usernames, userinfo.avatar for optional avatar)
+ -->
+ <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/grumblr.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- STUFF GOES HERE -->
+
+    <!-- Bootstrap stuff -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+  </body>
+</html>

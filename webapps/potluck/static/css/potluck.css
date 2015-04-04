@@ -1,0 +1,57 @@
+#navigation {
+  background-color:#299750;
+  color:#FFFFFF;
+  height:150px;
+  position: fixed;
+}
+#navigation a {
+  color:#4CFF00;
+  font-weight:bold;
+}
+#all-content {
+  top:150px;
+  position: relative;
+}
+#content {
+}
+
+.sidebar {
+  background-color:#15384B;
+  color:#FFFFFF;
+  height:100%;
+  top:150px;
+  width:200px;
+  position: fixed;
+  overflow-y: auto;
+}
+
+.content {
+}
+
+.large {
+  font-size:36px;
+}
+
+.bold {
+  font-weight:bold;
+}
+
+.center {
+  text-align:center;
+}
+
+.right {
+  text-align:right;
+}
+
+.date {
+  font-size:x-small;
+  color:#3E8F0D;
+}
+
+table {
+ margin-left:auto;
+ margin-right:auto;
+ border-spacing: 10px;
+ border-collapse: separate;
+}

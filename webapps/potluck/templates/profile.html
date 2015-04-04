@@ -1,0 +1,19 @@
+<!-- profile.html -->
+{% extends 'base.html' %}
+{% block title %}Profile - {{viewed_user_info.user.username}}{% endblock %}
+<!--
+For this we want:
+- display username + avatar
+- display email if the allowed by the user being displayed (if user1 looks at user2's profile, show if user2 allows email display)
+- display phone number if it is on record (this is optional, so if the user doesn't want it they can just leave it blank)
+- show rating
+- show comments
+- if the current user is not the viewed user, display a form that allows the current user to:
+--- rate the user
+--- make a comment on the user
+
+Likely to be passed to index:
+- user_info - UserInfo for the logged-in user
+- viewed_user_info - UserInfo for the profile being viewed
+- user_comments - Python set of Comments for which the viewed user is the subject
+ -->

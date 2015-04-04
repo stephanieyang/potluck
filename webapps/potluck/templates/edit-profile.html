@@ -1,0 +1,11 @@
+<!-- profile.html -->
+{% extends 'base.html' %}
+{% block title %}Edit Profile - {{user_info.user.username}}{% endblock %}
+<!--
+For this we want:
+- display a form containing the user's current contact info
+- display the user's rating (but not comments?)
+
+Likely to be passed to index:
+- user_info - UserInfo for the logged-in user
+ -->

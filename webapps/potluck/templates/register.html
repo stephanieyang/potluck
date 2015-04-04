@@ -1,0 +1,35 @@
+<!-- Just make this pretty, in line with the rest of the layout. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register for Potluck</title>
+
+    <!-- Bootstrap -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/potluck.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="col-md-4">&nbsp;</div>
+    <div class="col-md-4">
+      <br /><br />
+      <img style="width: 100%;" src="img/potluck_placeholder_logo.png" alt="Potluck" />
+      <br /><br />
+      <form role="form" action="" method="post">
+        <input type="username" name="username" class="form-control" placeholder="Username">
+        <input type="text" name="email" class="form-control" placeholder="Email">
+        <input type="password" name="password1" class="form-control" placeholder="Password">
+        <input type="password" name="password2" class="form-control" placeholder="Confirm Password">
+        <input type="text" name="phone" class="form-control" placeholder="Phone number (optional)">
+        <br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+        {% csrf_token %}
+      </form>
+    </div>
+    <div class="col-md-4">&nbsp;</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
