@@ -12,7 +12,7 @@ class UserInfo(models.Model):
     avatar = models.ImageField(upload_to="user-icons",blank=True,default="") # optional avatar that can be uploaded
     phone = models.CharField(max_length=12, default="", blank=True) # optional phone number
     num_ratings = models.IntegerField(default=0)    # number of users who have rated this user
-    total_rating = models.IntegerField(default=0)   # sum of all ratings
+    total_rating = models.IntegerField(default=0.0)   # sum of all ratings
     average_rating = models.FloatField(default=0.0) # average rating (num_ratings/total_rating), for convenience
     def __unicode__(self):
         return self.user.username
@@ -27,7 +27,7 @@ class UserComment(models.Model):
     subject = models.ForeignKey(User, related_name="subject")  # user that this comment is about
     author = models.ForeignKey(User, related_name="author")  # user that made this comment
     text = models.CharField(max_length=500,default="")      # content of the comment
-    time = models.DateTimeField(auto_now_add=True, default=timezone.now)
+    time = models.DateTimeField(auto_now_add=True)
 
 class SaleItem(models.Model):
     class Meta:
@@ -42,7 +42,7 @@ class SaleItem(models.Model):
     purchase_date = models.DateField(blank=True,null=True) # optional
     expiration_date = models.DateField(default=timezone.now) # date for item tracking/deletion if time runs out
     picture = models.ImageField(upload_to="item-pictures",null=True) # required!
-    posted_time = models.DateTimeField(auto_now_add=True, default=timezone.now)
+    posted_time = models.DateTimeField(auto_now_add=True)
 
 class Offer(models.Model):
     sender = models.ForeignKey(User, related_name="sender")       # the person offering

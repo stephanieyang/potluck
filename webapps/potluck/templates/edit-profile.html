@@ -1,6 +1,21 @@
 <!-- profile.html -->
-{% extends 'base.html' %}
-{% block title %}Edit Profile - {{user_info.user.username}}{% endblock %}
+{% if user_info.avatar %}
+<img src="{% url 'avatar' user_info.user.id %}" alt="{{user_info.user.username}}">
+{% else %}
+No avatar uploaded
+{% endif %}
+<form enctype="multipart/form-data" action="/potluck/edit_profile/" method="post">
+<tr><th><label for="id_avatar">Avatar:</label></th><td><input id="id_avatar" name="avatar" type="file" /></td></tr><br />
+<input type="checkbox" name="show_email" value="show_email"> Show my e-mail<br />
+<tr><th><label for="id_phone">Phone:</label></th><td><input id="id_phone" maxlength="12" name="phone" type="text" /></td></tr><br />
+<tr><th><label for="id_current_password">Current password:</label></th><td><input id="id_current_password" maxlength="200" name="current_password" type="password" /></td></tr><br />
+<tr><th><label for="id_new_password_1">New password 1:</label></th><td><input id="id_new_password_1" maxlength="200" name="new_password_1" type="password" /></td></tr><br />
+<tr><th><label for="id_new_password_2">New password 2:</label></th><td><input id="id_new_password_2" maxlength="200" name="new_password_2" type="password" /></td></tr><br />
+<input type="submit" value="Submit" />
+    {% csrf_token %}
+</form>
+
+* At least one of e-mail and phone number must be displayed to users for contact purposes.
 <!--
 For this we want:
 - display a form containing the user's current contact info

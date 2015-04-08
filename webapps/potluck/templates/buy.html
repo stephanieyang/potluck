@@ -1,5 +1,4 @@
 <!-- buy.html -->
-{% extends 'base.html' %}
 <!--
 For this we want:
 - list of items (maybe display categories with pictures?)
@@ -10,3 +9,8 @@ Likely to be passed in:
 - items (Python set of SaleItems - Google Python sets if you think you need to, but for loops + field references are probably all you need)
 - user_info (mostly for user_info.avatar, user_info.user.username)
  -->
+ {% for item in items %}
+ {{item.name}}: {{item.price}} {{item.id}} <a href="{% url 'profile' item.seller.id %}">{{item.seller.user.username}}</a><br />
+ <img src="{% url 'picture' item.id %}" alt="{{item.name}}" width="200px" />
+ <br /><br />
+ {% endfor %}

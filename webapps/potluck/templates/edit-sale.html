@@ -1,5 +1,4 @@
 <!-- edit-sale.html -->
-{% extends 'base.html' %}
 <!--
 For this we want:
 - Use the same info as the form on sell.html, but populate the form with the data from {{item}}
@@ -9,3 +8,14 @@ Likely to be passed in:
 - item (of type SaleItem)
 - user_info (for logged-in user)
  -->
+<form enctype="multipart/form-data" action="/potluck/edit_sale/{{item.id}}" method="post">
+<tr><th><label for="id_brand">Brand:</label></th><td><input id="id_brand" maxlength="255" name="brand" type="text" /></td></tr>
+<tr><th><label for="id_quantity">Quantity:</label></th><td><input id="id_quantity" maxlength="255" name="quantity" type="text" /></td></tr>
+<tr><th><label for="id_description">Description:</label></th><td><input id="id_description" maxlength="500" name="description" type="text" /></td></tr>
+<tr><th><label for="id_price">Price:</label></th><td><input id="id_price" name="price" step="0.01" type="number" /></td></tr>
+<tr><th><label for="id_purchase_date">Purchase date:</label></th><td><input id="id_purchase_date" name="purchase_date" type="text" /></td></tr>
+<tr><th><label for="id_expiration_date">Expiration date:</label></th><td><input id="id_expiration_date" name="expiration_date" type="text" value="2015-04-08" /><input id="initial-id_expiration_date" name="initial-expiration_date" type="hidden" value="2015-04-08 07:56:24+00:00" /></td></tr>
+<tr><th><label for="id_picture">Picture:</label></th><td><input id="id_picture" name="picture" type="file" /></td></tr>
+<input type="submit" value="Submit" />
+    {% csrf_token %}
+</form>

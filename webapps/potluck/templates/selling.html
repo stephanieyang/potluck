@@ -1,13 +1,17 @@
 <!-- selling.html -->
-{% extends 'base.html' %}
 <!--
 For this we want:
 - list of current items with basic info (e.g., picture, name, price, expiration date)
-- link to edit-item page (e.g., {% url 'edit-sale' item.id %}
+- link to edit-item page
 - easy price-slashing options
-- link to item deletion (e.g., {% url 'delete' item.id %}
+- link to item deletion
 
 Likely to be passed in:
 - items - Python set of SaleItems being sold by you
 - user_info - UserInfo for the logged-in user
  -->
+  {% for item in items %}
+ {{item.name}}: {{item.price}} <a href="{% url 'edit_sale' item.id %}">Edit</a><br />
+ {% endfor %}
+ 
+ 

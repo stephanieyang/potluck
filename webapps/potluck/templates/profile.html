@@ -1,6 +1,4 @@
 <!-- profile.html -->
-{% extends 'base.html' %}
-{% block title %}Profile - {{viewed_user_info.user.username}}{% endblock %}
 <!--
 For this we want:
 - display username + avatar
@@ -17,3 +15,29 @@ Likely to be passed to index:
 - viewed_user_info - UserInfo for the profile being viewed
 - user_comments - Python set of Comments for which the viewed user is the subject
  -->
+{{viewed_user_info.user.username}}<br />
+Contact info:<br />
+{% if viewed_user_info.user.email %}
+  {{viewed_user_info.user.email}}<br />
+{% endif %}
+{% if viewed_user_info.phone %}
+  {{viewed_user_info.phone}}<br />
+{% endif %}
+Ratings:<br />
+{{viewed_user_info.average_rating}} (from {{viewed_user_info.num_ratings}} users)<br /><br />
+Rate:<br />
+<a href="{% url 'rate' viewed_user_info.user.id 1 %}">1</a>&nbsp;
+<a href="{% url 'rate' viewed_user_info.user.id 2 %}">2</a>&nbsp;
+<a href="{% url 'rate' viewed_user_info.user.id 3 %}">3</a>&nbsp;
+<a href="{% url 'rate' viewed_user_info.user.id 4 %}">4</a>&nbsp;
+<a href="{% url 'rate' viewed_user_info.user.id 5 %}">5</a><br />
+Comment:<br />
+{% for comment in user_comments %}
+{{comment.text}}<br />
+{% endfor %}
+<form action="/potluck/comment/{{viewed_user_info.user.id}}" method="post">
+    {% csrf_token %}
+<textarea rows=2 cols=75 name="text"></textarea>
+<input type="submit" value="Submit" />
+</form>
+<br />

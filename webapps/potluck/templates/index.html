@@ -31,10 +31,9 @@ Likely to be passed to index:
       <div id="navigation" class="col-md-12">
         <ul class="nav nav-tabs" role="tablist">
 		  <li><a href="index.html"><img id="nav_logo" src="img/potluck_placeholder_logo.png"></a></li>
-          <li role="presentation"><a href="buy.html">Buy</a></li>
-          <li role="presentation"><a href="sell.html">Sell</a></li>
-          <li role="presentation"><a href="notifications.html">Notifications</a></li>
-          <li role="presentation"><a href="editprofile.html"><img id="nav_avatar" src="img/avatar.png"></a></li>
+          <li role="presentation"><a href="{% url 'buy' %}">Buy</a></li>
+          <li role="presentation"><a href="{% url 'sell' %}">Sell</a></li>
+          <li role="presentation"><a href="{% url 'edit_profile' %}"><img id="nav_avatar" src="img/avatar.png"></a></li>
         </ul>
       </div>
     </div>

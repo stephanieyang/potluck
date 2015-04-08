@@ -30,28 +30,113 @@ def home(request):
     return render(request, 'index.html', context)
     
 @login_required
-def buy(request):
+def buy(request): # DONE?
     context = {}
-    items = SaleItem.objects.none() # TODO: implement this
+    # for now, display items put up for sale in the past 24 hours
+    current_time = datetime.datetime.now()
+    past_day = current_time - datetime.timedelta(1,0,0,0,0,0) # subtract difference of 1 day
+    items = SaleItem.objects.filter(posted_time__gt=past_day)
     user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     context['items'] = items
     return render(request, 'buy.html', context)
 
 @login_required
-def edit_sale(request, id):
+def edit_sale(request, id): # DONE
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
-    item = SaleItem.objects.get(id=id) # TODO: implement this better?
+    item = SaleItem.objects.get(id=id)
     context['user_info'] = user_info
     context['item'] = item
+    
+    # if a get request, just return the form
+    if request.method == 'GET':
+      context['form'] = EditSaleForm()
+      return render(request, 'edit-sale.html', context)
+    
+    # POST request - edit information
+    form = EditSaleForm(request.POST, request.FILES)
+    if not form.is_valid():
+      print "edit_sale: invalid form", form.errors
+      context['form'] = form
+      return render(request, 'edit-sale.html', context)
+    item.brand = form.cleaned_data['brand']
+    item.quantity = form.cleaned_data['quantity']
+    item.description = form.cleaned_data['description']
+    item.price = form.cleaned_data['price']
+    item.purchase_date = form.cleaned_data['purchase_date']
+    item.expiration_date = form.cleaned_data['expiration_date']
+    if 'picture' in request.FILES:
+      item.picture = request.FILES['picture']
+    item.save()
     return render(request, 'edit-sale.html', context)
 
+
+def rate_user(request, id, rating): # DONE
+    context = {}
+    user_info = UserInfo.objects.get(user=request.user)
+    rated_user = User.objects.get(id=id)
+    rated_user_info = UserInfo.objects.get(user=rated_user)
+    rated_user_info.num_ratings += 1
+    rated_user_info.total_rating += float(rating)
+    rated_user_info.average_rating = rated_user_info.total_rating/rated_user_info.num_ratings
+    rated_user_info.save()
+    
+    # return profile of subject user
+    viewed_user_info = UserInfo.objects.get(user__id=id)
+    user_comments = UserComment.objects.filter(subject=viewed_user_info.user)
+    context['user_info'] = user_info
+    context['viewed_user_info'] = viewed_user_info
+    context['user_comments'] = user_comments
+    context['form'] = CommentForm()
+    return redirect('/potluck/profile/' + str(rated_user_info.user.id), context)
+
+def comment_on_user(request, id): # DONE
+    context = {}
+    user_info = UserInfo.objects.get(user=request.user)
+    subject_user = User.objects.get(id=id)
+    subject_user_info = UserInfo.objects.get(user=subject_user)
+    form = CommentForm(request.POST)
+    if not form.is_valid():
+      print "comment_on_user: invalid form", form.errors
+      context['form'] = form
+      return render(request, 'profile.html', context)
+    text = form.cleaned_data['text']
+    comment = UserComment(subject=subject_user, author=request.user,text=text)
+    comment.save()
+    # return profile of subject user
+    viewed_user_info = UserInfo.objects.get(user__id=id)
+    user_comments = UserComment.objects.filter(subject=viewed_user_info.user)
+    context['user_info'] = user_info
+    context['viewed_user_info'] = viewed_user_info
+    context['user_comments'] = user_comments
+    context['form'] = CommentForm()
+    return render(request, 'profile.html', context)
+
 @login_required
-def sell(request):
+def sell(request): # DONE?
+    # What happens if you try to submit without a picture?
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
+    
+    if request.method == 'GET':
+      print "sell: GET"
+      context['form'] = SellForm()
+      return render(request, 'sell.html', context)
+    
+    print "sell: POST"
+    form = SellForm(request.POST, request.FILES)
+    if (not form.is_valid()) or (not ('picture' in request.FILES)):
+      print "sell: invalid form", form.errors
+      context['form'] = form
+      return render(request, 'index.html', context)
+    print "sell: creating new item..."
+    new_sale_item = SaleItem(seller=user_info,name=form.cleaned_data['name'],brand=form.cleaned_data['brand'],quantity=form.cleaned_data['quantity'],
+      description=form.cleaned_data['description'],price=form.cleaned_data['price'],purchase_date=form.cleaned_data['purchase_date'],
+      expiration_date=form.cleaned_data['expiration_date'],picture=request.FILES['picture'])
+    new_sale_item.save()
+    print "sell: new item saved"
     # form = SellForm(request.POST)
     # if not form.is_valid():
       # # TODO: go back to original page
@@ -63,10 +148,10 @@ def sell(request):
     return render(request, 'sell.html', context)
     
 @login_required
-def selling(request):
+def selling(request): # DONE
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
-    items = SaleItem.objects.none() # TODO: implement this
+    items = SaleItem.objects.filter(seller=user_info)
     context['user_info'] = user_info
     context['items'] = items
     # form = SellForm(request.POST)
@@ -80,7 +165,7 @@ def selling(request):
     return render(request, 'selling.html', context)
 
 @login_required
-def profile(request, id):
+def profile(request, id): # DONE
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
     viewed_user_info = UserInfo.objects.get(user__id=id)
@@ -88,28 +173,73 @@ def profile(request, id):
     context['user_info'] = user_info
     context['viewed_user_info'] = viewed_user_info
     context['user_comments'] = user_comments
+    context['form'] = CommentForm()
     return render(request, 'profile.html', context)
 
-def slash_price(request, id, amt):
+def slash_price(request, id, amt): # DONE
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
-    # TODO: implement price slash
-    return render(request, 'selling.html', context)
+    item = SaleItem.objects.get(id=id)
+    amt = int(amt)
+    newProportion = (100.0-amt)/100.0
+    item.price = round(float(item.price)*newProportion, 2)
+    item.save()
+    return redirect('/potluck/selling/', context)
     
 @login_required
-def edit_profile(request):
+def edit_profile(request): # DONE
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
-    viewed_user_info = UserInfo.objects.get(user__id=id)
     context['user_info'] = user_info
+    
+    if request.method == 'GET':
+      context['form'] = UserProfileInfoForm()
+      return render(request, 'edit-profile.html', context)
+    
+    # POST - edit profile fields
+    # Check the validity of the form data
+    form = UserProfileInfoForm(request.POST, request.FILES)
+    context['form'] = form
+    if not form.is_valid():
+        print form.errors
+        return render(request, 'edit-profile.html', context)
+    
+    if 'avatar' in request.FILES:
+      user_info.avatar = request.FILES['avatar']
+    
+    print "editprofile - editing"
+    # edit profile information
+    #user_info.name = form.cleaned_data['name']
+    user_info.phone = form.cleaned_data['phone']
+    
+    # change password
+    current_password = form.cleaned_data['current_password']
+    new_password_1 = form.cleaned_data['new_password_1']
+    # no need to check most of the logic since we did that in validation, but we do need to check whether the fields have been filled in to begin with
+    if current_password and new_password_1:
+      user = authenticate(username=user_info.username, password=current_password)
+      if user is not None:
+        request.user.set_password(form.cleaned_data['new_password_1'])
+        request.user.save()
+    user_info.save()
+    
     return render(request, 'edit-profile.html', context)
     
 @login_required
 def search(request):
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
-    search_results = SaleItem.objects.none() # TODO: implement this better
     context['user_info'] = user_info
+    
+    if request.method == 'GET':
+        context['form'] = SearchForm()
+        return render(request, 'search.html', context)
+    
+    # POST
+    form = SearchForm(request.POST)
+    search_term = form.cleaned_data['search_term']
+    search_results = SaleItem.objects.filter(description__icontains=search_term) # TODO: implement this better
+    context['search_term'] = search_term
     context['search_results'] = search_results
     return render(request, 'search.html', context)
 
@@ -127,10 +257,10 @@ def get_avatar(request, id):
 @login_required
 def get_picture(request, id):
     item = get_object_or_404(SaleItem, id=id)
-    if not item.image:
+    if not item.picture:
         raise Http404
-    content_type = guess_type(item.image.name)
-    return HttpResponse(item.image, content_type = content_type)
+    content_type = guess_type(item.picture.name)
+    return HttpResponse(item.picture, content_type = content_type)
 
 # @login_required
 # def offer(request):
@@ -195,6 +325,7 @@ def resetpassword_confirm(request, username, token):
             return render(request,'reset-password-confirm.html',context)
 
 def resetpassword_check(request, username):
+    print "resetpassword_check"
     context={}
     if not request.method == 'POST':
         return
@@ -210,6 +341,8 @@ def resetpassword_check(request, username):
     pass2 = form.cleaned_data['password2']
     if (pass1 == pass2): # necessary?
         user.set_password(pass1)
+        user.save()
+        print "resetpassword_check: password set correctly for",user.username,":",pass1
         return render(request, 'reset-password-complete.html',context)
     else:
         return render(request,'reset-password-confirm.html',context)
@@ -243,7 +376,12 @@ def register(request):
 
     # Creates the new user from the valid form data
     context['errors'] = form.errors
-    new_user = User.objects.create_user(username=form.cleaned_data['username'],
+    if form.cleaned_data['phone']:
+        new_user = User.objects.create_user(username=form.cleaned_data['username'],
+                                        email=form.cleaned_data['email'],
+                                        phone=form.cleaned_data['phone'])
+    else:
+        new_user = User.objects.create_user(username=form.cleaned_data['username'],
                                         email=form.cleaned_data['email'],
                                         password=form.cleaned_data['password1'])
     new_user.is_active = False;
