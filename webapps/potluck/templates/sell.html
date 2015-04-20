@@ -1,6 +1,7 @@
+ {% extends "base.html" %}
 <!-- sell.html -->
 
-<form enctype="multipart/form-data" action="/potluck/sell/" method="post">
+<!-- <form enctype="multipart/form-data" action="/potluck/sell/" method="post">
     {% csrf_token %}
     <tr><th><label for="id_name">Name:</label></th><td><input id="id_name" maxlength="255" name="name" type="text" /></td></tr><br />
 <tr><th><label for="id_brand">Brand:</label></th><td><input id="id_brand" maxlength="255" name="brand" type="text" /></td></tr><br />
@@ -13,7 +14,7 @@
 <tr><th><label for="picture">Picture:</label></th><td><input id="picture" name="picture" type="file" /></td></tr>
 
     <input type="submit" value="Submit" />
-</form>
+</form> -->
 <!--
 For this we want:
 - a form for the user to fill out information.
@@ -21,3 +22,151 @@ For this we want:
 Likely to be passed in:
 - user_info - UserInfo for the logged-in user
  -->
+
+ <!-- buy.html -->
+<!--
+For this we want:
+- list of items (maybe display categories with pictures?)
+- if you've already searched something, show matching items on sale formatted in some way (e.g., picture, name, price, expiration date)
+- when you click on a specific item, it should expand to show more information about that item (seller, seller rating, etc.)
+
+Likely to be passed in:
+- items (Python set of SaleItems - Google Python sets if you think you need to, but for loops + field references are probably all you need)
+- user_info (mostly for user_info.avatar, user_info.user.username)
+ -->
+
+<!-- {% for item in items %}
+ {{item.name}}: {{item.price}} {{item.id}} <a href="{% url 'profile' item.seller.id %}">{{item.seller.user.username}}</a><br />
+ <img src="{% url 'picture' item.id %}" alt="{{item.name}}" width="200px" />
+ <br /><br />
+ {% endfor %} -->
+ {% block content %}
+
+    <link rel="stylesheet" href="assets/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="assets/owl-carousel/owl.theme.css">
+    <link rel="stylesheet" href="assets/sky-forms/css/sky-forms.css">   
+    <!-- MAIN CONTENT -->
+        <div class="pg-opt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Sell</h2>
+                </div>
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Sell</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="slice slice-lg bg-image" style="background-image:url(/static/images/backgrounds/full-bg-1.jpg)">
+        <div class="wp-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3">                   
+                        <div class="wp-block default user-form user-form-alpha no-margin">
+                            <div class="form-header">
+                                <h2>Sell your groceries</h2>
+                            </div>
+                            <div class="form-body">
+                                <form action="" id="frmRegister" class="sky-form">                                    
+                                    <fieldset class="no-padding">           
+                                        <section class="">
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="form-group">
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-user"></i>
+                                                            <input type="text" name="name" placeholder="Name of Produce">
+                                                            <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
+                                                        </label>
+                                                    </div>               
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="form-group">
+                                                        <div class="form-group">
+                                                            <label class="input">
+                                                                <i class="icon-append fa fa-envelope-o"></i>
+                                                                <input type="email" name="count" placeholder="Number of Product">
+                                                                <b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
+                                                            </label>
+                                                        </div>  
+                                                    </div>               
+                                                </div>
+                                            </div>   
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-lock"></i>
+                                                            <input type="text" name="price" placeholder="Selling Price">
+                                                            <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
+                                                        </label>
+                                                    </div>               
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select class="form-control">
+                                                            <option>Categories</option>
+                                                        </select>
+                                                    </div>               
+                                                </div>
+                                            </div>   
+                                        </section>
+                                        
+                                        <section class="no-margin">
+                                            <div class="row">
+                                                <section class="col-xs-6">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-user"></i>
+                                                        <input type="text" name="fname" placeholder="First name">
+                                                    </label>
+                                                </section>
+                                                <section class="col-xs-6">
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-user"></i>
+                                                        <input type="text" name="lname" placeholder="Last name">
+                                                    </label>
+                                                </section>
+                                            </div> 
+                                        </section>
+                                    </fieldset>  
+
+                                    <fieldset>
+                                        <div class="row">
+                                    </fieldset>
+                    
+                                        </div>
+                                        
+                                    <div class="form-footer">
+                                        <section>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" name="subscription" id="subscription">
+                                                        <i></i> I accept the <a href="#">terms and conditions</a> of this website.
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button class="btn btn-alt btn-icon btn-icon-right btn-icon-go pull-right" type="submit">
+                                                        <span>Sell Now</span>
+                                                    </button>
+                                                </div>
+                                        </section>
+                                    </div>
+
+                                    
+                                </form>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
