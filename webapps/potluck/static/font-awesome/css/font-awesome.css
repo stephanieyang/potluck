@@ -372,6 +372,10 @@
 .fa-check-square-o:before {
   content: "\f046";
 }
+
+.fa-check-empty:before {
+  content: "\f096";
+}
 .fa-arrows:before {
   content: "\f047";
 }

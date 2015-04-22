@@ -34,11 +34,30 @@ class EditSaleForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     search_term = forms.CharField(max_length=255)
-        
+    
+    search_term = forms.CharField(max_length = 50)
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
-        if len(cleaned_data.get('search_term')) == 0: # more than two decimal places
+        search_term = cleaned_data.get('search_term')
+        if not search_term:
+            raise forms.ValidationError("Please enter a term to search.")
+        return cleaned_data
+        
+    def clean(self):
+        print "SearchForm clean"
+        cleaned_data = super(SearchForm, self).clean()
+        if cleaned_data.get('search_term') and len(cleaned_data.get('search_term')) == 0: # more than two decimal places
             raise forms.ValidationError("Please enter a nonempty search term.")
+        else:
+            if cleaned_data.get('search_term') and cleaned_data.get('search_term') != None:
+                print "SearchForm: no search_term"
+            else:
+                print "SearchForm: got search_term: ", cleaned_data.get('search_term')
+                if len(cleaned_data.get('search_term')) == 0:
+                    print "SearchForm: empty search_term"
+                else:
+                    print "SearchForm: nonempty search_term"
+            print "SearchForm: error"
         return cleaned_data
         
 class CommentForm(forms.ModelForm):

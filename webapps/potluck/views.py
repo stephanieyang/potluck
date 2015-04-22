@@ -32,13 +32,23 @@ def home(request):
 @login_required
 def buy(request): # DONE?
     context = {}
-    # for now, display items put up for sale in the past 24 hours
+    # for now, display items put up for sale in the past week
     current_time = datetime.datetime.now()
-    past_day = current_time - datetime.timedelta(1,0,0,0,0,0) # subtract difference of 1 day
-    items = SaleItem.objects.filter(posted_time__gt=past_day)
+    past_week = current_time - datetime.timedelta(7,0,0,0,0,0) # subtract difference of 1 week
+    items = SaleItem.objects.filter(posted_time__gt=past_week)
+    items_per_row = 3 # magic number
+    full_item_list = list(items)
+    rows = [full_item_list[i:i+3] for i in xrange(0,len(full_item_list),3)]
+    item_list = {}
+    row_count = 1
+    for row in rows:
+      item_list[row_count] = row
+      row_count += 1
+    print "item_list = ", item_list
     user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
-    context['items'] = items
+    context['items'] = rows
+    # not the best notation, but better for consistency in the event anyone but me actually edits this
     return render(request, 'buy.html', context)
 
 @login_required
@@ -231,17 +241,37 @@ def search(request):
     user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     
-    if request.method == 'GET':
-        context['form'] = SearchForm()
-        return render(request, 'search.html', context)
+    #if request.method == 'GET':
+    #    context['form'] = SearchForm()
+    #    return render(request, 'search.html', context)
     
     # POST
     form = SearchForm(request.POST)
+    if not form.is_valid():
+        context['errors'] = form.errors
+        return render(request, 'search.html', context)
     search_term = form.cleaned_data['search_term']
-    search_results = SaleItem.objects.filter(description__icontains=search_term) # TODO: implement this better
+    if ' ' in search_term:
+        parts = search_term.split(' ')
+        for part in parts:
+            partial_results = SaleItem.objects.filter(description__icontains=part)
+            search_results = search_results | partial_results
+    else:
+        search_results = SaleItem.objects.filter(description__icontains=search_term)
     context['search_term'] = search_term
     context['search_results'] = search_results
     return render(request, 'search.html', context)
+    
+    
+    
+    context['form'] = form
+    if not form.is_valid():
+        return render(request, 'search.html', context)
+    else:
+      search_term = form.cleaned_data['search_term']
+      matching_grumbls = Grumbl.objects.filter(grumbl__contains=search_term).exclude(user__in=user_info.blocked.all())
+      context['matching_grumbls'] = matching_grumbls
+      return render(request, 'search.html', context)
 
 @login_required
 def get_avatar(request, id):

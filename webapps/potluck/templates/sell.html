@@ -72,28 +72,25 @@ Likely to be passed in:
                                 <h2>Sell your groceries</h2>
                             </div>
                             <div class="form-body">
-                                <form action="" id="frmRegister" class="sky-form">                                    
+                            <form enctype="multipart/form-data" action="/potluck/sell/" method="post">
+                                {% csrf_token %}
                                     <fieldset class="no-padding">           
                                         <section class="">
                                             <div class="row">
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-user"></i>
-                                                            <input type="text" name="name" placeholder="Name of Produce">
-                                                            <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
+                                                            <i class="icon-append fa fa-check-square-o"></i>
+                                                            <input maxlength="255" name="name" type="text" placeholder="Eggs" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Name
                                                         </label>
                                                     </div>               
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
-                                                        <div class="form-group">
-                                                            <label class="input">
-                                                                <i class="icon-append fa fa-envelope-o"></i>
-                                                                <input type="email" name="count" placeholder="Number of Product">
-                                                                <b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
-                                                            </label>
-                                                        </div>  
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-square-o"></i>
+                                                            <input maxlength="255" name="brand" type="text" placeholder="Egg Farm"><br />&nbsp;&nbsp;&nbsp;&nbsp;Brand
+                                                        </label>
                                                     </div>               
                                                 </div>
                                             </div>   
@@ -101,66 +98,63 @@ Likely to be passed in:
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-lock"></i>
-                                                            <input type="text" name="price" placeholder="Selling Price">
-                                                            <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
+                                                            <i class="icon-append fa fa-check-square-o"></i>
+                                                            <input maxlength="255" name="quantity" type="text" placeholder="1 dozen large" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Quantity
                                                         </label>
                                                     </div>               
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <select class="form-control">
-                                                            <option>Categories</option>
-                                                        </select>
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-square-o"></i>
+                                                            <textarea maxlength="500" name="description" type="text" placeholder="Dyed green"></textarea><br />&nbsp;&nbsp;&nbsp;&nbsp;Description
+                                                        </label>
                                                     </div>               
                                                 </div>
-                                            </div>   
-                                        </section>
-                                        
-                                        <section class="no-margin">
-                                            <div class="row">
-                                                <section class="col-xs-6">
-                                                    <label class="input">
-                                                        <i class="icon-append fa fa-user"></i>
-                                                        <input type="text" name="fname" placeholder="First name">
-                                                    </label>
-                                                </section>
-                                                <section class="col-xs-6">
-                                                    <label class="input">
-                                                        <i class="icon-append fa fa-user"></i>
-                                                        <input type="text" name="lname" placeholder="Last name">
-                                                    </label>
-                                                </section>
                                             </div> 
-                                        </section>
-                                    </fieldset>  
-
-                                    <fieldset>
-                                        <div class="row">
-                                    </fieldset>
-                    
-                                        </div>
-                                        
-                                    <div class="form-footer">
-                                        <section>
                                             <div class="row">
-                                                <div class="col-md-8">
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" name="subscription" id="subscription">
-                                                        <i></i> I accept the <a href="#">terms and conditions</a> of this website.
-                                                    </label>
+                                                <div class="col-xs-6">
+                                                    <div class="form-group">
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-check-square-o"></i>
+                                                            <input name="price" step="0.01" type="number" placeholder="3.99" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Price
+                                                        </label>
+                                                    </div>               
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <button class="btn btn-alt btn-icon btn-icon-right btn-icon-go pull-right" type="submit">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-square-o"></i>
+                                                            <input name="purchase_date" type="text" placeholder="2015-04-13" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Purchase date
+                                                        </label>
+                                                    </div>               
+                                                </div>
+                                            </div> 
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-check-square-o"></i>
+                                                            <input name="expiration_date" type="text" placeholder="2015-05-17" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Expiration date
+                                                        </label>
+                                                    </div>               
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-check-square-o"></i>
+                                                            <input id="picture" name="picture" type="file" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Image
+                                                        </label>
+                                                    </div>               
+                                                </div>
+                                            </div> 
+                                            <div class="row">
+                                                    <button type="submit" value="Submit" class="btn btn-alt btn-icon btn-icon-right btn-icon-go pull-right" type="submit">
                                                         <span>Sell Now</span>
                                                     </button>
-                                                </div>
+                                            </div>
                                         </section>
-                                    </div>
-
-                                    
-                                </form>  
-                            </div>
+                                    </fieldset>
                         </div>
                     </div>
                 </div>
