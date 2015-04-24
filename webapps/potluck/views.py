@@ -32,21 +32,15 @@ def home(request):
 @login_required
 def buy(request): # DONE?
     context = {}
+    user_info = UserInfo.objects.get(user=request.user)
+    context['user_info'] = user_info
     # for now, display items put up for sale in the past week
     current_time = datetime.datetime.now()
     past_week = current_time - datetime.timedelta(7,0,0,0,0,0) # subtract difference of 1 week
     items = SaleItem.objects.filter(posted_time__gt=past_week)
     items_per_row = 3 # magic number
     full_item_list = list(items)
-    rows = [full_item_list[i:i+3] for i in xrange(0,len(full_item_list),3)]
-    item_list = {}
-    row_count = 1
-    for row in rows:
-      item_list[row_count] = row
-      row_count += 1
-    print "item_list = ", item_list
-    user_info = UserInfo.objects.get(user=request.user)
-    context['user_info'] = user_info
+    rows = [full_item_list[i:i+items_per_row] for i in xrange(0,len(full_item_list),items_per_row)]
     context['items'] = rows
     # not the best notation, but better for consistency in the event anyone but me actually edits this
     return render(request, 'buy.html', context)
@@ -195,6 +189,51 @@ def slash_price(request, id, amt): # DONE
     item.price = round(float(item.price)*newProportion, 2)
     item.save()
     return redirect('/potluck/selling/', context)
+
+def category(request, term):
+    context = {}
+    user_info = UserInfo.objects.get(user=request.user)
+    context['user_info'] = user_info
+    
+    keywords = []
+    if term == 'vegetables':
+        keywords = ['lettuce','tomato','eggplant','cabbage','pepper','onion','broccoli','bean',
+            'celery','beet','corn','spinach','bok choy','pea','carrot','sprout','avocado',
+            'cucumber','zucchini','pumpkin','melon','vegetable','potato']
+    elif term == 'fruits':
+        keywords = ['apple','orange','banana','berry','kiwi','pear','grape','fruit',
+            'plum','persimmon','mango','coconut','cherry','lemon','lime','lychee','olive','peach',
+            'pomegranate','raisin','tangerine','apricot']
+    elif term == 'packaged':
+        keywords = ['chips','package','bar','frozen','premade']
+    elif term == 'drinks':
+        keywords = ['water','soda','cola','seltzer','sprite','coke','pepsi','dr. pepper',
+            'mountain dew','juice','tea','coffee','milk','drink','cider']
+    elif term == 'snacks':
+        keywords = ['chips','salsa','bar','snack','cookie','cake','brownie','dip','ice cream',
+            'guacamole','straw','popcorn','biscuit','cracker','pretzel','nut','yogurt','jerky']
+    elif term == 'healthy':
+        keywords = ['acai','superfood','healthy','low-fat']
+        keywords += ['lettuce','tomato','eggplant','cabbage','pepper','onion','broccoli','bean',
+            'celery','beet','corn','spinach','bok choy','pea','carrot','sprout','avocado',
+            'cucumber','zucchini','pumpkin','melon','vegetable','potato'] # add keywords from vegetables
+        keywords += ['apple','orange','banana','berry','kiwi','pear','grape','fruit',
+            'plum','persimmon','mango','coconut','cherry','lemon','lime','lychee','olive','peach',
+            'pomegranate','raisin','tangerine','apricot'] # add keywords from fruit
+    # otherwise, no keywords
+    
+    search_results = SaleItem.objects.none()
+    print term, keywords
+    for keyword in keywords:
+        partial_name_results = SaleItem.objects.filter(name__icontains=keyword)
+        partial_desc_results = SaleItem.objects.filter(description__icontains=keyword)
+        search_results = search_results | partial_name_results | partial_desc_results
+    
+    items_per_row = 3 # magic number
+    full_result_list = list(search_results)
+    rows = [full_result_list[i:i+items_per_row] for i in xrange(0,len(full_result_list),items_per_row)]
+    context['items'] = rows
+    return render(request, 'buy.html', context)
     
 @login_required
 def edit_profile(request): # DONE
@@ -254,8 +293,9 @@ def search(request):
     if ' ' in search_term:
         parts = search_term.split(' ')
         for part in parts:
-            partial_results = SaleItem.objects.filter(description__icontains=part)
-            search_results = search_results | partial_results
+            partial_name_results = SaleItem.objects.filter(name__icontains=part)
+            partial_desc_results = SaleItem.objects.filter(description__icontains=part)
+            search_results = search_results | partial_name_results | partial_desc_results
     else:
         search_results = SaleItem.objects.filter(description__icontains=search_term)
     context['search_term'] = search_term
