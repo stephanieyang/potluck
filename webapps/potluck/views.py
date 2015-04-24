@@ -22,12 +22,24 @@ from django.contrib.auth.tokens import default_token_generator
 # Used to send mail from within Django
 from django.core.mail import send_mail
 
+from datetime import date, datetime
+
 @login_required
 def home(request):
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
+    purge_old_items()
     return render(request, 'index.html', context)
+    
+def purge_old_items():
+    items = SaleItem.objects.all()
+    now = datetime.now()
+    today = date(now.year, now.month, now.day)
+    old_items = SaleItem.objects.filter(expiration_date__lt=today)
+    while old_items:
+        old_item = old_items.pop()
+        old_item.delete()
     
 @login_required
 def buy(request): # DONE?
@@ -38,13 +50,16 @@ def buy(request): # DONE?
     current_time = datetime.datetime.now()
     past_week = current_time - datetime.timedelta(7,0,0,0,0,0) # subtract difference of 1 week
     items = SaleItem.objects.filter(posted_time__gt=past_week)
-    items_per_row = 3 # magic number
-    full_item_list = list(items)
-    rows = [full_item_list[i:i+items_per_row] for i in xrange(0,len(full_item_list),items_per_row)]
-    context['items'] = rows
+    context['items'] = get_rows(items)
     # not the best notation, but better for consistency in the event anyone but me actually edits this
     return render(request, 'buy.html', context)
 
+def get_rows(item_set):
+    items_per_row = 3 # magic number
+    full_item_list = list(item_set)
+    rows = [full_item_list[i:i+items_per_row] for i in xrange(0,len(full_item_list),items_per_row)]
+    return rows
+    
 @login_required
 def edit_sale(request, id): # DONE
     context = {}
@@ -229,10 +244,7 @@ def category(request, term):
         partial_desc_results = SaleItem.objects.filter(description__icontains=keyword)
         search_results = search_results | partial_name_results | partial_desc_results
     
-    items_per_row = 3 # magic number
-    full_result_list = list(search_results)
-    rows = [full_result_list[i:i+items_per_row] for i in xrange(0,len(full_result_list),items_per_row)]
-    context['items'] = rows
+    context['items'] = get_rows(search_results)
     return render(request, 'buy.html', context)
     
 @login_required
@@ -288,19 +300,26 @@ def search(request):
     form = SearchForm(request.POST)
     if not form.is_valid():
         context['errors'] = form.errors
-        return render(request, 'search.html', context)
+        return render(request, 'buy.html', context)
     search_term = form.cleaned_data['search_term']
+    search_results = SaleItem.objects.none()
     if ' ' in search_term:
+        print "multiple", search_term
         parts = search_term.split(' ')
         for part in parts:
             partial_name_results = SaleItem.objects.filter(name__icontains=part)
             partial_desc_results = SaleItem.objects.filter(description__icontains=part)
             search_results = search_results | partial_name_results | partial_desc_results
+        print search_results
     else:
-        search_results = SaleItem.objects.filter(description__icontains=search_term)
+        print "single", search_term
+        name_results = SaleItem.objects.filter(name__icontains=search_term)
+        desc_results = SaleItem.objects.filter(description__icontains=search_term)
+        search_results = name_results | desc_results
+        print search_results
     context['search_term'] = search_term
-    context['search_results'] = search_results
-    return render(request, 'search.html', context)
+    context['items'] = context['items'] = get_rows(search_results)
+    return render(request, 'buy.html', context)
     
     
     

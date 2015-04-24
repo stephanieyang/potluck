@@ -81,17 +81,12 @@ Likely to be passed in:
                 <button type="submit" class="btn btn-base">Search</button>
                 {% csrf_token %}
             </form>
-            
-            <form class="navbar-form navbar-right" name="search" role="form" action="{% url 'search' %}" method="post">
-          <input type="text" class="form-control" name="search_term" placeholder="Search..."> 
-          <button type="submit">Go!</button>
-          {% csrf_token %}
-        </form>
-        
-        
         </div>
     </div>
 </div>                    </div>
+                        {% if errors %}
+                        {{errors}}
+                        {% endif %}
                         {% for row_items in items %}
                           <div class="row">
                             {% for item in row_items %}
@@ -101,6 +96,9 @@ Likely to be passed in:
                                         <img src="{% url 'picture' item.id %}" alt="{{item.name}}" width="200px"  class="img-responsive img-center" />
                                     </figure>
                                     <h2 class="product-title">{{item.name}}</h2>
+                                    <p>
+                                    {{item.description}} {{item.seller}} {{item.brand}} {{item.description}} {{item.purchase_date}} {{item.expiration_date}}
+                                    </p>
                                     <div class="wp-block-footer">
                                         <span class="price pull-left">${{item.price}}</span>
                                     </div>
