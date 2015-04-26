@@ -37,9 +37,7 @@ def purge_old_items():
     now = datetime.now()
     today = date(now.year, now.month, now.day)
     old_items = SaleItem.objects.filter(expiration_date__lt=today)
-    while old_items:
-        old_item = old_items.pop()
-        old_item.delete()
+    old_items.delete()
     
 @login_required
 def buy(request): # DONE?
@@ -189,6 +187,7 @@ def profile(request, id): # DONE
     user_info = UserInfo.objects.get(user=request.user)
     viewed_user_info = UserInfo.objects.get(user__id=id)
     user_comments = UserComment.objects.filter(subject=viewed_user_info.user)
+    user_items = SaleItem.objects.filter(seller=user_info)
     context['user_info'] = user_info
     context['viewed_user_info'] = viewed_user_info
     context['user_comments'] = user_comments
