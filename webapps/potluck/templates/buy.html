@@ -47,22 +47,22 @@ Likely to be passed in:
             <h4>Category</h4>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="">Vegetables</a>
+                    <a href="{% url 'category' 'vegetables' %}">Vegetables</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="">Fruits</a>
+                    <a href="{% url 'category' 'fruits' %}">Fruits</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="">Package Goods</a>
+                    <a href="{% url 'category' 'packaged' %}">Package Goods</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="">Drinks</a>
+                    <a href="{% url 'category' 'drinks' %}">Drinks</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="">Snacks</a>
+                    <a href="{% url 'category' 'snacks' %}">Snacks</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="">Healthy Options</a>
+                    <a href="{% url 'category' 'healthy' %}">Healthy Options</a>
                 </li>
             </ul>
 
@@ -71,19 +71,22 @@ Likely to be passed in:
 
 
     <div class="panel panel-default panel-sidebar-1">
-        <div class="panel-heading"><h2>Advanced search</h2></div>
+        <div class="panel-heading"><h2>Search</h2></div>
         <div class="panel-body">
-            <form name="search" role="form" action="{% url 'search' %}" class="form-light" role="form">
-                {% csrf_token %}
+            <form name="search" action="{% url 'search' %}" class="form-light" role="form" method="post">
                 <div class="form-group">
                 <label>Search for products</label>
                 <input type="text" name="search_term" class="form-control" placeholder="I want to find...">
                 </div>
                 <button type="submit" class="btn btn-base">Search</button>
+                {% csrf_token %}
             </form>
         </div>
     </div>
 </div>                    </div>
+                        {% if errors %}
+                        {{errors}}
+                        {% endif %}
                         {% for row_items in items %}
                           <div class="row">
                             {% for item in row_items %}
@@ -93,6 +96,9 @@ Likely to be passed in:
                                         <img src="{% url 'picture' item.id %}" alt="{{item.name}}" width="200px"  class="img-responsive img-center" />
                                     </figure>
                                     <h2 class="product-title">{{item.name}}</h2>
+                                    <p>
+                                    {{item.description}} {{item.seller}} {{item.brand}} {{item.description}} {{item.purchase_date}} {{item.expiration_date}}
+                                    </p>
                                     <div class="wp-block-footer">
                                         <span class="price pull-left">${{item.price}}</span>
                                     </div>

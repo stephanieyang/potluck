@@ -22,35 +22,44 @@ from django.contrib.auth.tokens import default_token_generator
 # Used to send mail from within Django
 from django.core.mail import send_mail
 
+from datetime import date, datetime
+
 @login_required
 def home(request):
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
+    purge_old_items()
     return render(request, 'index.html', context)
+    
+def purge_old_items():
+    items = SaleItem.objects.all()
+    now = datetime.now()
+    today = date(now.year, now.month, now.day)
+    old_items = SaleItem.objects.filter(expiration_date__lt=today)
+    while old_items:
+        old_item = old_items.pop()
+        old_item.delete()
     
 @login_required
 def buy(request): # DONE?
     context = {}
+    user_info = UserInfo.objects.get(user=request.user)
+    context['user_info'] = user_info
     # for now, display items put up for sale in the past week
     current_time = datetime.datetime.now()
     past_week = current_time - datetime.timedelta(7,0,0,0,0,0) # subtract difference of 1 week
     items = SaleItem.objects.filter(posted_time__gt=past_week)
-    items_per_row = 3 # magic number
-    full_item_list = list(items)
-    rows = [full_item_list[i:i+3] for i in xrange(0,len(full_item_list),3)]
-    item_list = {}
-    row_count = 1
-    for row in rows:
-      item_list[row_count] = row
-      row_count += 1
-    print "item_list = ", item_list
-    user_info = UserInfo.objects.get(user=request.user)
-    context['user_info'] = user_info
-    context['items'] = rows
+    context['items'] = get_rows(items)
     # not the best notation, but better for consistency in the event anyone but me actually edits this
     return render(request, 'buy.html', context)
 
+def get_rows(item_set):
+    items_per_row = 3 # magic number
+    full_item_list = list(item_set)
+    rows = [full_item_list[i:i+items_per_row] for i in xrange(0,len(full_item_list),items_per_row)]
+    return rows
+    
 @login_required
 def edit_sale(request, id): # DONE
     context = {}
@@ -195,6 +204,48 @@ def slash_price(request, id, amt): # DONE
     item.price = round(float(item.price)*newProportion, 2)
     item.save()
     return redirect('/potluck/selling/', context)
+
+def category(request, term):
+    context = {}
+    user_info = UserInfo.objects.get(user=request.user)
+    context['user_info'] = user_info
+    
+    keywords = []
+    if term == 'vegetables':
+        keywords = ['lettuce','tomato','eggplant','cabbage','pepper','onion','broccoli','bean',
+            'celery','beet','corn','spinach','bok choy','pea','carrot','sprout','avocado',
+            'cucumber','zucchini','pumpkin','melon','vegetable','potato']
+    elif term == 'fruits':
+        keywords = ['apple','orange','banana','berry','kiwi','pear','grape','fruit',
+            'plum','persimmon','mango','coconut','cherry','lemon','lime','lychee','olive','peach',
+            'pomegranate','raisin','tangerine','apricot']
+    elif term == 'packaged':
+        keywords = ['chips','package','bar','frozen','premade']
+    elif term == 'drinks':
+        keywords = ['water','soda','cola','seltzer','sprite','coke','pepsi','dr. pepper',
+            'mountain dew','juice','tea','coffee','milk','drink','cider']
+    elif term == 'snacks':
+        keywords = ['chips','salsa','bar','snack','cookie','cake','brownie','dip','ice cream',
+            'guacamole','straw','popcorn','biscuit','cracker','pretzel','nut','yogurt','jerky']
+    elif term == 'healthy':
+        keywords = ['acai','superfood','healthy','low-fat']
+        keywords += ['lettuce','tomato','eggplant','cabbage','pepper','onion','broccoli','bean',
+            'celery','beet','corn','spinach','bok choy','pea','carrot','sprout','avocado',
+            'cucumber','zucchini','pumpkin','melon','vegetable','potato'] # add keywords from vegetables
+        keywords += ['apple','orange','banana','berry','kiwi','pear','grape','fruit',
+            'plum','persimmon','mango','coconut','cherry','lemon','lime','lychee','olive','peach',
+            'pomegranate','raisin','tangerine','apricot'] # add keywords from fruit
+    # otherwise, no keywords
+    
+    search_results = SaleItem.objects.none()
+    print term, keywords
+    for keyword in keywords:
+        partial_name_results = SaleItem.objects.filter(name__icontains=keyword)
+        partial_desc_results = SaleItem.objects.filter(description__icontains=keyword)
+        search_results = search_results | partial_name_results | partial_desc_results
+    
+    context['items'] = get_rows(search_results)
+    return render(request, 'buy.html', context)
     
 @login_required
 def edit_profile(request): # DONE
@@ -249,18 +300,26 @@ def search(request):
     form = SearchForm(request.POST)
     if not form.is_valid():
         context['errors'] = form.errors
-        return render(request, 'search.html', context)
+        return render(request, 'buy.html', context)
     search_term = form.cleaned_data['search_term']
+    search_results = SaleItem.objects.none()
     if ' ' in search_term:
+        print "multiple", search_term
         parts = search_term.split(' ')
         for part in parts:
-            partial_results = SaleItem.objects.filter(description__icontains=part)
-            search_results = search_results | partial_results
+            partial_name_results = SaleItem.objects.filter(name__icontains=part)
+            partial_desc_results = SaleItem.objects.filter(description__icontains=part)
+            search_results = search_results | partial_name_results | partial_desc_results
+        print search_results
     else:
-        search_results = SaleItem.objects.filter(description__icontains=search_term)
+        print "single", search_term
+        name_results = SaleItem.objects.filter(name__icontains=search_term)
+        desc_results = SaleItem.objects.filter(description__icontains=search_term)
+        search_results = name_results | desc_results
+        print search_results
     context['search_term'] = search_term
-    context['search_results'] = search_results
-    return render(request, 'search.html', context)
+    context['items'] = context['items'] = get_rows(search_results)
+    return render(request, 'buy.html', context)
     
     
     
