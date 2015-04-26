@@ -16,8 +16,7 @@
                                 <h2>Sign in to your account</h2>
                             </div>
                             <div class="form-body">
-                                <form role="form" action="{% url 'django.contrib.auth.views.login' %}" method="post" id="frmLogin" class="sky-form form-signin">                                    
-                                    {% csrf_token %}
+                                <form role="form" action="{% url 'django.contrib.auth.views.login' %}" method="post" id="frmLogin" class="sky-form form-signin"> 
                                     <fieldset>                  
                                         <section>
                                             <div class="form-group">
@@ -50,7 +49,8 @@
                                                 <span>Login</span>
                                             </button>
                                         </section>
-                                    </fieldset>  
+                                    </fieldset>                                     
+                                    {% csrf_token %}
                                 </form>  
                             </div>
   
