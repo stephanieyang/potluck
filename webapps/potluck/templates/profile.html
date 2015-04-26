@@ -25,12 +25,17 @@ Contact info:<br />
 {% endif %}
 Ratings:<br />
 {{viewed_user_info.average_rating}} (from {{viewed_user_info.num_ratings}} users)<br /><br />
+Items:<br />
+{% for item in items %}
+{{item.name}} {{item.price}}<br /> <!-- See buy.html for a more comprehensive list of item info, you choose how much you want to show here -->
+{% endfor %}
+<br />
 Rate:<br />
 <a href="{% url 'rate' viewed_user_info.user.id 1 %}">1</a>&nbsp;
 <a href="{% url 'rate' viewed_user_info.user.id 2 %}">2</a>&nbsp;
 <a href="{% url 'rate' viewed_user_info.user.id 3 %}">3</a>&nbsp;
 <a href="{% url 'rate' viewed_user_info.user.id 4 %}">4</a>&nbsp;
-<a href="{% url 'rate' viewed_user_info.user.id 5 %}">5</a><br />
+<a href="{% url 'rate' viewed_user_info.user.id 5 %}">5</a><br /><br />
 Comment:<br />
 {% for comment in user_comments %}
 {{comment.text}}<br />

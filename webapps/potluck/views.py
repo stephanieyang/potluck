@@ -22,7 +22,7 @@ from django.contrib.auth.tokens import default_token_generator
 # Used to send mail from within Django
 from django.core.mail import send_mail
 
-from datetime import date, datetime
+from datetime import date
 
 @login_required
 def home(request):
@@ -192,6 +192,7 @@ def profile(request, id): # DONE
     context['viewed_user_info'] = viewed_user_info
     context['user_comments'] = user_comments
     context['form'] = CommentForm()
+    context['items'] = user_items
     return render(request, 'profile.html', context)
 
 def slash_price(request, id, amt): # DONE
