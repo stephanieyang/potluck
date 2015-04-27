@@ -22,6 +22,7 @@ from django.contrib.auth.tokens import default_token_generator
 # Used to send mail from within Django
 from django.core.mail import send_mail
 
+import datetime
 from datetime import date
 
 @login_required
@@ -34,7 +35,7 @@ def home(request):
     
 def purge_old_items():
     items = SaleItem.objects.all()
-    now = datetime.now()
+    now = datetime.datetime.now()
     today = date(now.year, now.month, now.day)
     old_items = SaleItem.objects.filter(expiration_date__lt=today)
     old_items.delete()
