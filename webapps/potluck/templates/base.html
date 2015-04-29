@@ -100,16 +100,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account</a>
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu">
-                                <a tabindex="-1" href="{% url 'profile' %}">Profile</a>
+                                <a tabindex="-1" href="{% url 'profile' user_info.user.id %}">Profile</a>
                                 <ul class="dropdown-menu">
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="#">Team</a>
-                                <ul class="dropdown-menu">
-                                    <li><a tabindex="-1" href="team-list-1.html">Team members: 1</a></li>
-                                    <li><a tabindex="-1" href="team-list-2.html">Team members: 2</a></li>
-                                    <li><a tabindex="-1" href="team-member-1.html">Single team member: 1</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">

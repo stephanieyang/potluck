@@ -26,29 +26,24 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="user-profile-img">
-                            <img src="images/prv/team/team-agency-2.jpg" alt="">
+                            <img src="{% url 'avatar' user_info.id}">
                         </div>
-                        <ul class="categories mt-20">
-                            <li><a href="#">Personal informations</a></li>
-                            <li><a href="#">Settings</a></li>
-                            <li><a href="#">My orders</a></li>
-                            <li><a href="#">Wishlist</a></li>
-                        </ul>
+                  
                     </div>
                     <div class="col-md-9">                     
                         <div class="tabs-framed">
                             <ul class="tabs clearfix">
                                 <li class="active"><a href="#tab-1" data-toggle="tab">About me</a></li>
                                 <li><a href="#tab-2" data-toggle="tab">Order history</a></li>
-                                <li><a href="#tab-3" data-toggle="tab">Whishlist</a></li>
+                                <li><a href="#tab-3" data-toggle="tab">My Items</a></li>
+								<li><a href="#tab-4" data-toggle="tab">Your Rating</a></li>
                             </ul>
 
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="tab-1">
                                     <div class="tab-body">
                                         <dl class="dl-horizontal style-2">
-                                            <h3 class="title title-lg">Personal information</h3>
-                                            <p class="mb-20">Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                                            <h3 class="title title-lg">Personal information</h3><br>
                                             
                                             <dt>Your name</dt>
                                             <dd>
@@ -56,22 +51,27 @@
                                                 <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
                                             </dd>
                                             <hr>
+                                            <dt>Your username</dt>
+                                            <dd>
+                                                <span class="pull-left">{{viewed_user_info.user.username}}</span>
+                                                <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
+                                            </dd>
+                                            <hr>
                                             <dt>Email</dt>
                                             <dd>
-                                            <span class="pull-left">name@example.com</span>
+                                            <span class="pull-left">{{viewed_user_info.user.email}}</span>
                                                 <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
                                             </dd>
                                             <hr>
                                             <dt>Phone</dt>
                                             <dd>
-                                                <span class="pull-left">+40-722.123.456</span>
+                                                <span class="pull-left">{{viewed_user_info.phone}}</span>
                                                 <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
                                             </dd>
                                             <hr>
-                                            <dt>Address</dt>
+                                            <dt>Your Rating</dt>
                                             <dd>
-                                                <span class="pull-left">Bucharest, Romania</span>
-                                                <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
+                                                <span class="pull-left">{{viewed_user_info.average_rating}} (from {{viewed_user_info.num_ratings}} users)</span>
                                             </dd>
                                             <hr>
                                             <dt>Company</dt>
@@ -87,7 +87,7 @@
                                 <div class="tab-pane fade" id="tab-2">
                                     <div class="tab-body" style="padding-bottom: 0;">
                                         <h3 class="title title-lg">My orders</h3>
-                                        <p class="mb-20">Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                                        <p class="mb-20">Keep in track of all your orders</p>
                                     
                                     <table class="table table-orders table-bordered table-striped table-responsive no-margin">
                                         <tbody>
@@ -161,8 +161,8 @@
 
                                 <div class="tab-pane fade" id="tab-3">
                                     <div class="tab-body">
-                                        <h3 class="title title-lg">My wishlist</h3>
-                                        <p class="mb-20">Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                                        <h3 class="title title-lg">My Items</h3>
+                                        <p class="mb-20">Keep in track of the items you are sharing</p>
 
                                         <div class="row">
                                             <!-- Product list -->
@@ -332,6 +332,81 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="tab-4">
+                                    <div class="tab-body" style="padding-bottom: 0;">
+                                        <h3 class="title title-lg">My Ratings</h3>
+                                        <p class="mb-20">How are you doing as a philanthropist?</p>
+                                    
+                                    <table class="table table-orders table-bordered table-striped table-responsive no-margin">
+                                        <tbody>
+                                            <tr>
+                                                <th>Order Number</th>
+                                                <th>Date</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                                <th>Tracking</th>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="#">230320</a></td>
+                                                <td>23-08-2014</td>
+                                                <td>RON 2000.99</td>
+                                                <td><i class="fa fa-check"></i> Shipped out</td>
+                                                <td>
+                                                    230320-x
+                                                    <br>
+                                                    <strong>via Fan Curier - Romania</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">230320</a></td>
+                                                <td>23-08-2014</td>
+                                                <td>RON 2000.99</td>
+                                                <td><i class="fa fa-check"></i> Shipped out</td>
+                                                <td>
+                                                    230320-x
+                                                    <br>
+                                                    <strong>via Fan Curier - Romania</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">230320</a></td>
+                                                <td>23-08-2014</td>
+                                                <td>RON 2000.99</td>
+                                                <td><i class="fa fa-check"></i> Shipped out</td>
+                                                <td>
+                                                    230320-x
+                                                    <br>
+                                                    <strong>via Fan Curier - Romania</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">230320</a></td>
+                                                <td>23-08-2014</td>
+                                                <td>RON 2000.99</td>
+                                                <td><i class="fa fa-check"></i> Shipped out</td>
+                                                <td>
+                                                    230320-x
+                                                    <br>
+                                                    <strong>via Fan Curier - Romania</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">230320</a></td>
+                                                <td>23-08-2014</td>
+                                                <td>RON 2000.99</td>
+                                                <td><i class="fa fa-check"></i> Shipped out</td>
+                                                <td>
+                                                    230320-x
+                                                    <br>
+                                                    <strong>via Fan Curier - Romania</strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                     </div>
                                 </div>
 
