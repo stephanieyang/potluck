@@ -46,8 +46,8 @@ def buy(request): # DONE?
     context['user_info'] = user_info
     # for now, display items put up for sale in the past week
     current_time = datetime.datetime.now()
-    past_week = current_time - datetime.timedelta(7,0,0,0,0,0) # subtract difference of 1 week
-    items = SaleItem.objects.filter(posted_time__gt=past_week)
+    #past_week = current_time - datetime.timedelta(7,0,0,0,0,0) # subtract difference of 1 week
+    items = SaleItem.objects.all()
     context['items'] = get_rows(items)
     # not the best notation, but better for consistency in the event anyone but me actually edits this
     return render(request, 'buy.html', context)
