@@ -31,22 +31,6 @@
 </head>
 
 
-<!-- MOBILE MENU - Option 2 -->
-<section id="navMobile" class="aside-menu left">
-    <form class="form-horizontal form-search">
-        <div class="input-group">
-            <input type="search" class="form-control" placeholder="Search...">
-            <span class="input-group-btn">
-                <button id="btnHideMobileNav" class="btn btn-close" type="button" title="Hide sidebar"><i class="fa fa-times"></i></button>
-            </span>
-        </div>
-    </form>
-    <div id="dl-menu" class="dl-menuwrapper">
-        <ul class="dl-menu"></ul>
-    </div>
-</section> 
-
-
 <!-- MAIN WRAPPER -->
 <div></div>
             <!-- HEADER -->
@@ -64,7 +48,7 @@
                 </button>
 
                 <a class="navbar-brand" href="/potluck/">
-                    <img src="/static/images/potluck_logo.png" alt="Potluck">
+                    <img src="/static/images/potluck_logo_with.png" alt="Potluck"> <br>
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -82,32 +66,6 @@
                                 </div>
                             </form>
                         </div>
-                    </li>
-
-                    <li class="dropdown dropdown-meganav mega-dropdown-fluid">
-                        <a href="/potluck/">Home</a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a href="{% url 'buy' %}" class="dropdown-toggle">Buy</a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a href="{% url 'sell' %}" class="dropdown-toggle">Sell</a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account</a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="{% url 'profile' user_info.user.id %}">Profile</a>
-                                <ul class="dropdown-menu">
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a href="#">Logout</a>
-                            </li>
-                        </ul>
                     </li>
 
                 </ul>
@@ -198,63 +156,7 @@
 
  
     <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="col">
-                       <h4>Contact us</h4>
-                       <ul>
-                            <li>Email: <a href="mailto:hello@example.com" title="Email Us">seohyuns@andrew.cmu.edu</a></li>
-                        </ul>
-                     </div>
-                </div>
-                
-                <div class="col-md-3">
-                    <div class="col">
-                        <h4>Mailing list</h4>
-                        <p>Sign up if you would like to receive occasional treats from us.</p>
-                        <form class="form-horizontal form-light">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Your email address...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-base" type="button">Go!</button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                
-                <div class="col-md-3">
-                    <div class="col col-social-icons">
-                        <h4>Follow us</h4>
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-google-plus"></i></a>
-                        <a href="#"><i class="fa fa-linkedin"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-skype"></i></a>
-                        <a href="#"><i class="fa fa-pinterest"></i></a>
-                        <a href="#"><i class="fa fa-youtube-play"></i></a>
-                        <a href="#"><i class="fa fa-flickr"></i></a>
-                    </div>
-                </div>
-
-                 <div class="col-md-3">
-                    <div class="col">
-                        <h4>About us</h4>
-                        <p class="no-margin">
-                        Potluck is a multi-solution product made with simplicity in mind so you can benefit as much as possible from it.
-                        <br><br>
-                        <a href="#" class="btn btn-block btn-base btn-icon fa-check"><span>Try it now</span></a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <hr>
-            
-        </div>
-    </footer>
+    
 </div>
 
 <!-- Essentials -->
