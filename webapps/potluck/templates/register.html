@@ -1,35 +1,115 @@
-<!-- Just make this pretty, in line with the rest of the layout. -->
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Register for Potluck</title>
+{% extends "base.html" %}
 
-    <!-- Bootstrap -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/potluck.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="col-md-4">&nbsp;</div>
-    <div class="col-md-4">
-      <br /><br />
-      <img style="width: 100%;" src="img/potluck_placeholder_logo.png" alt="Potluck" />
-      <br /><br />
-      <form role="form" action="" method="post">
-        <input type="username" name="username" class="form-control" placeholder="Username">
-        <input type="text" name="email" class="form-control" placeholder="Email">
-        <input type="password" name="password1" class="form-control" placeholder="Password">
-        <input type="password" name="password2" class="form-control" placeholder="Confirm Password">
-        <input type="text" name="phone" class="form-control" placeholder="Phone number (optional)">
-        <br />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-        {% csrf_token %}
-      </form>
+
+{% block content %}
+
+    <!-- MAIN CONTENT -->
+        <div class="pg-opt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Sign Up</h2>
+                </div>
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li class="active">Sign up</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">&nbsp;</div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-  </body>
-</html>
+
+    <section class="slice bg-white">
+        <div class="wp-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3">                   
+                        <div class="wp-block default user-form no-margin">
+                            <div class="form-header">
+                                <h2>Register for Potluck!</h2>
+                            </div>
+                            <div class="form-body">
+                                <form action="" id="frmRegister" class="sky-form">                                    
+                                    <fieldset class="no-padding">           
+                                        <section>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="form-group">
+                                                        <label class="label">Username</label>
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-user"></i>
+                                                            <input type="text" name="username" placeholder="">
+                                                            <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
+                                                        </label>
+                                                    </div>               
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="form-group">
+                                                        <div class="form-group">
+                                                            <label class="label">E-mail</label>
+                                                            <label class="input">
+                                                                <i class="icon-append fa fa-envelope-o"></i>
+                                                                <input type="email" name="email" placeholder="">
+                                                                <b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
+                                                            </label>
+                                                        </div>  
+                                                    </div>               
+                                                </div>
+                                            </div>   
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="label">Password</label>
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-lock"></i>
+                                                            <input type="text" name="username" placeholder="">
+                                                            <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
+                                                        </label>
+                                                    </div>               
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="label">Confirm Password</label>
+                                                        <label class="input">
+                                                            <i class="icon-append fa fa-lock"></i>
+                                                            <input type="email" name="email" placeholder="">
+                                                            <b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
+                                                        </label>
+                                                    </div>               
+                                                </div>
+                                            </div>   
+                                        </section>
+                                        <hr>
+                                        <section>
+                                            <div class="row">
+                                                <section class="col-xs-6">
+                                                    <label class="label">First name</label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-user"></i>
+                                                        <input type="text" name="fname" placeholder="">
+                                                    </label>
+                                                </section>
+                                                <section class="col-xs-6">
+                                                    <label class="label">Last name</label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-user"></i>
+                                                        <input type="text" name="lname" placeholder="">
+                                                    </label>
+                                                </section>
+                                            </div> 
+                                        </section>
+                                    </fieldset>  
+                                </form>    
+                            </div>
+                            <div class="form-footer">
+                                <p>Already have an account? <a href="{% url 'sell' %}">Click here to sign in.</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
