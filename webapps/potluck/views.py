@@ -35,8 +35,7 @@ def home(request):
     
 def purge_old_items():
     items = SaleItem.objects.all()
-    now = datetime.datetime.now()
-    today = date(now.year, now.month, now.day)
+    today = date.today()
     old_items = SaleItem.objects.filter(expiration_date__lt=today)
     old_items.delete()
     
