@@ -46,32 +46,6 @@
     </div>
 </section> 
 
-<!-- SLIDEBAR -->
-<section id="asideMenu" class="aside-menu right">
-    <form class="form-horizontal form-search">
-        <div class="input-group">
-            <input type="search" class="form-control" placeholder="Search..." />
-            <span class="input-group-btn">
-                <button id="btnHideAsideMenu" class="btn btn-close" type="button" title="Hide sidebar"><i class="fa fa-times"></i></button>
-            </span>
-        </div>
-    </form>
-    
-    <h5 class="side-section-title">My Account</h5>
-    <div class="nav">
-        <ul>
-            <li>
-                <a href="{% url 'selling' %}">My Items</a>
-            </li>
-            <li>
-                <a href="{% url 'sell' %}">Sell</a>
-            </li>
-            <li>
-                <a href="{% url 'logout' %}">Logout</a>
-            </li>
-        </ul>
-    </div>
-</section>
 
 <!-- MAIN WRAPPER -->
 <div></div>
@@ -89,7 +63,7 @@
                     <i class="fa fa-bars icon-custom"></i>
                 </button>
 
-                <a class="navbar-brand" href="/potluck/" title="Boomerang | One template. Infinite solutions">
+                <a class="navbar-brand" href="/potluck/">
                     <img src="/static/images/potluck_logo.png" alt="Potluck">
                 </a>
             </div>
@@ -122,11 +96,28 @@
                         <a href="{% url 'sell' %}" class="dropdown-toggle">Sell</a>
                     </li>
 
-                    <li class="dropdown-aux">
-                        <a href="#" id="cmdAsideMenu" class="dropdown-toggle dropdown-form-toggle" title="Open slidebar">
-                            <i class="fa fa-outdent"></i>
-                        </a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="{% url 'profile' %}">Profile</a>
+                                <ul class="dropdown-menu">
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#">Team</a>
+                                <ul class="dropdown-menu">
+                                    <li><a tabindex="-1" href="team-list-1.html">Team members: 1</a></li>
+                                    <li><a tabindex="-1" href="team-list-2.html">Team members: 2</a></li>
+                                    <li><a tabindex="-1" href="team-member-1.html">Single team member: 1</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="#">Logout</a>
+                            </li>
+                        </ul>
                     </li>
+
                 </ul>
                
             </div><!--/.nav-collapse -->
@@ -264,8 +255,8 @@
 <!-- Boomerang App JS -->
 <script src="/static/js/wp.app.js"></script>
 <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
+    <script src="/static/js/html5shiv.js"></script>
+    <script src="/static/js/respond.min.js"></script>
 <![endif]-->
 
 <!-- Temp -- You can remove this once you started to work on your project -->
