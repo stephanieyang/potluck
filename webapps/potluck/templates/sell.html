@@ -80,16 +80,16 @@ Likely to be passed in:
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-check-square-o"></i>
-                                                            <input maxlength="255" name="name" type="text" placeholder="Eggs" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Name
+                                                            Name of Produce <br>
+                                                            <input maxlength="255" name="name" type="text" placeholder="ex) Fresh Oranges" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>               
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-square-o"></i>
-                                                            <input maxlength="255" name="brand" type="text" placeholder="Egg Farm"><br />&nbsp;&nbsp;&nbsp;&nbsp;Brand
+                                                            Brand <br>
+                                                            <input maxlength="255" name="brand" type="text" placeholder="ex) Local Farmer's Market"><br />&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>               
                                                 </div>
@@ -98,16 +98,16 @@ Likely to be passed in:
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-check-square-o"></i>
-                                                            <input maxlength="255" name="quantity" type="text" placeholder="1 dozen large" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Quantity
+                                                            Quantity <br>
+                                                            <input maxlength="255" name="quantity" type="text" placeholder="ex) 3" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>               
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-square-o"></i>
-                                                            <textarea maxlength="500" name="description" type="text" placeholder="Dyed green"></textarea><br />&nbsp;&nbsp;&nbsp;&nbsp;Description
+                                                            Description <br>
+                                                            <textarea maxlength="500" name="description" type="text" placeholder="ex) Fresh Navel Oranges Premium. Very Sweet"></textarea><br />&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>               
                                                 </div>
@@ -116,16 +116,16 @@ Likely to be passed in:
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-check-square-o"></i>
-                                                            <input name="price" step="0.01" type="number" placeholder="3.99" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Price
+                                                            Price $<br>
+                                                            <input name="price" step="0.01" type="number" placeholder="ex) 4.99" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>               
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-square-o"></i>
-                                                            <input name="purchase_date" type="text" placeholder="2015-04-13" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Purchase date
+                                                            Purchase Date <br>
+                                                            <input name="purchase_date" type="date" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>               
                                                 </div>
@@ -134,16 +134,16 @@ Likely to be passed in:
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-check-square-o"></i>
-                                                            <input name="expiration_date" type="text" placeholder="2015-05-17" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Expiration date
+                                                            Expiration Date <br>
+                                                            <input name="expiration_date" type="date"/><br />&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>               
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="input">
-                                                            <i class="icon-append fa fa-check-square-o"></i>
-                                                            <input id="picture" name="picture" type="file" /><br />&nbsp;&nbsp;&nbsp;&nbsp;Image
+                                                            Image <br>
+                                                            <input id="picture" name="picture" type="file" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </label>
                                                     </div>               
                                                 </div>
@@ -162,5 +162,13 @@ Likely to be passed in:
         </div>
     </section>
 
+<script>
+function myFunction() {
+    var x = document.createElement("INPUT");
+    x.setAttribute("type", "date");
+    x.setAttribute("value", "2014-02-09");
+    document.body.appendChild(x);
+}
+</script>
 
 {% endblock %}
