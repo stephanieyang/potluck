@@ -64,7 +64,7 @@
                 </button>
 
                 <a class="navbar-brand" href="/potluck/">
-                    <img src="/static/images/potluck_logo.png" alt="Potluck">
+                    <img src="/static/images/potluck_logo_with.png" alt="Potluck">
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -97,15 +97,15 @@
                     </li>
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings</a>
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu">
-                                <a tabindex="-1" href="{% url 'profile' user_info.user.id %}">Profile</a>
+                                <a tabindex="-1" href="{% url 'profile' user_info.user.id %}">My Account</a>
                                 <ul class="dropdown-menu">
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
-                                <a href="#">Logout</a>
+                                <a href="{% url 'logout' %}">Logout</a>
                             </li>
                         </ul>
                     </li>

@@ -26,7 +26,13 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="user-profile-img">
-                            <img src="{% url 'avatar' user_info.id}">
+                            <dd>
+                                {% if viewed_user_info.avatar %}
+                              		<img src="{% url 'avatar' viewed_user_info.id %}" alt="{{viewed_user_info.user.username}}" width="100px" />
+                                {% else %}
+                                  <img src="/static/img/avatar.png" alt="{{viewed_user_info.user.username}}" />
+                                {% endif %}
+                            </dd>
                         </div>
                   
                     </div>
@@ -35,7 +41,7 @@
                             <ul class="tabs clearfix">
                                 <li class="active"><a href="#tab-1" data-toggle="tab">User Information</a></li>
                                 <li><a href="#tab-2" data-toggle="tab">User Sales</a></li>
-                                <li><a href="#tab-3" data-toggle="tab">User Ratings</a></li>
+                                <li><a href="#tab-3" data-toggle="tab">Rate User</a></li>
                             </ul>
 
                             <div class="tab-content">
@@ -44,13 +50,6 @@
                                         <dl class="dl-horizontal style-2">
                                             <h3 class="title title-lg">Personal information</h3><br>
                                             <dt>&nbsp;</dt>
-                                            <dd>
-                                                {% if viewed_user_info.avatar %}
-                                                  <img src="{% url 'avatar' viewed_user_info.id %}" alt="{{viewed_user_info.user.username}}" width="100px" />
-                                                {% else %}
-                                                  <img src="/static/img/avatar.png" alt="{{viewed_user_info.user.username}}" />
-                                                {% endif %}
-                                            </dd>
                                             <dt>Username</dt>
                                             <dd>
                                                 <span class="pull-left">{{viewed_user_info.user.username}}</span>
@@ -69,6 +68,9 @@
                                                 <span class="pull-left">{{viewed_user_info.phone}}</span>
                                             </dd>
                                             {% endif %}
+                                            <hr>
+                                            <dt></dt>
+                                            	<dd><a href="{% url 'my_account' %}" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a></dd>
                                         </dl>
                                     </div>
                                 </div>
