@@ -68,9 +68,11 @@
                                                 <span class="pull-left">{{viewed_user_info.phone}}</span>
                                             </dd>
                                             {% endif %}
-                                            <hr>
-                                            <dt></dt>
-                                            	<dd><a href="{% url 'my_account' %}" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a></dd>
+                                            {% if viewed_user_info.user.username == user_info.user.username %}
+	                                            <hr>
+	                                            <dt></dt>
+	                                            	<dd><a href="{% url 'my_account' %}" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a></dd>
+                                        	{% endif %}
                                         </dl>
                                     </div>
                                 </div>
