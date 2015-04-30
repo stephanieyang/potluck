@@ -33,10 +33,9 @@
                     <div class="col-md-9">                     
                         <div class="tabs-framed">
                             <ul class="tabs clearfix">
-                                <li class="active"><a href="#tab-1" data-toggle="tab">About me</a></li>
-                                <li><a href="#tab-2" data-toggle="tab">Order history</a></li>
-                                <li><a href="#tab-3" data-toggle="tab">My Items</a></li>
-								<li><a href="#tab-4" data-toggle="tab">My Ratings</a></li>
+                                <li class="active"><a href="#tab-1" data-toggle="tab">User Information</a></li>
+                                <li><a href="#tab-2" data-toggle="tab">User Sales</a></li>
+                                <li><a href="#tab-3" data-toggle="tab">User Ratings</a></li>
                             </ul>
 
                             <div class="tab-content">
@@ -44,316 +43,71 @@
                                     <div class="tab-body">
                                         <dl class="dl-horizontal style-2">
                                             <h3 class="title title-lg">Personal information</h3><br>
-                                            
+                                            <dt>&nbsp;</dt>
+                                            <dd>
+                                                {% if viewed_user_info.avatar %}
+                                                  <img src="{% url 'avatar' viewed_user_info.id %}" alt="{{viewed_user_info.user.username}}" width="100px" />
+                                                {% else %}
+                                                  <img src="/static/img/avatar.png" alt="{{viewed_user_info.user.username}}" />
+                                                {% endif %}
+                                            </dd>
                                             <dt>Username</dt>
                                             <dd>
                                                 <span class="pull-left">{{viewed_user_info.user.username}}</span>
-                                                <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
                                             </dd>
                                             <hr>
+                                            {% if viewed_user_info.show_email %}
                                             <dt>Email</dt>
                                             <dd>
                                             <span class="pull-left">{{viewed_user_info.user.email}}</span>
-                                                <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
                                             </dd>
                                             <hr>
+                                            {% endif %}
+                                            {% if viewed_user_info.phone %}
                                             <dt>Phone</dt>
                                             <dd>
                                                 <span class="pull-left">{{viewed_user_info.phone}}</span>
-                                                <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
                                             </dd>
-                                            <hr>
-                                            <dt>Rating</dt>
-                                            <dd>
-                                                <span class="pull-left">{{viewed_user_info.average_rating}} (from {{viewed_user_info.num_ratings}} users)</span>
-                                            </dd>
-                                            <hr>
-                                            <dt>Company</dt>
-                                            <dd>
-                                                <span class="pull-left">Web Pixels</span>
-                                                <a href="#" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a>
-                                            </dd>
-                                            
+                                            {% endif %}
                                         </dl>
                                     </div>
                                 </div>
 
                                 <div class="tab-pane fade" id="tab-2">
                                     <div class="tab-body" style="padding-bottom: 0;">
-                                        <h3 class="title title-lg">My orders</h3>
-                                        <p class="mb-20">Keep in track of all your orders</p>
+                                        <h3 class="title title-lg">User Sales</h3>
+                                        <p class="mb-20">Items this user is selling</p>
                                     
-                                    <table class="table table-orders table-bordered table-striped table-responsive no-margin">
-                                        <tbody>
-                                            <tr>
-                                                <th>Order Number</th>
-                                                <th>Date</th>
-                                                <th>Total</th>
-                                                <th>Status</th>
-                                                <th>Tracking</th>
-                                            </tr>
-                                        
-                                            <tr>
-                                                <td><a href="#">230320</a></td>
-                                                <td>23-08-2014</td>
-                                                <td>RON 2000.99</td>
-                                                <td><i class="fa fa-check"></i> Shipped out</td>
-                                                <td>
-                                                    230320-x
-                                                    <br>
-                                                    <strong>via Fan Curier - Romania</strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">230320</a></td>
-                                                <td>23-08-2014</td>
-                                                <td>RON 2000.99</td>
-                                                <td><i class="fa fa-check"></i> Shipped out</td>
-                                                <td>
-                                                    230320-x
-                                                    <br>
-                                                    <strong>via Fan Curier - Romania</strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">230320</a></td>
-                                                <td>23-08-2014</td>
-                                                <td>RON 2000.99</td>
-                                                <td><i class="fa fa-check"></i> Shipped out</td>
-                                                <td>
-                                                    230320-x
-                                                    <br>
-                                                    <strong>via Fan Curier - Romania</strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">230320</a></td>
-                                                <td>23-08-2014</td>
-                                                <td>RON 2000.99</td>
-                                                <td><i class="fa fa-check"></i> Shipped out</td>
-                                                <td>
-                                                    230320-x
-                                                    <br>
-                                                    <strong>via Fan Curier - Romania</strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">230320</a></td>
-                                                <td>23-08-2014</td>
-                                                <td>RON 2000.99</td>
-                                                <td><i class="fa fa-check"></i> Shipped out</td>
-                                                <td>
-                                                    230320-x
-                                                    <br>
-                                                    <strong>via Fan Curier - Romania</strong>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                     {% for item in items %}
+                                        {{item.name}}: {{item.price}}<br />
+                                        <img src="{% url 'picture' item.id %}" alt="{{item.name}}" />
+                                        <br /><br />
+                                     {% endfor %}
                                     </div>
                                 </div>
 
                                 <div class="tab-pane fade" id="tab-3">
                                     <div class="tab-body">
-                                        <h3 class="title title-lg">My Items</h3>
-                                        <p class="mb-20">Keep in track of the items you are sharing</p>
-
-                                        <div class="row">
-                                            <!-- Product list -->
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-1.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Nikon Coolpix L320</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-2.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Samsung Galaxy S4</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-3.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Asus Ultra Notebook</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <!-- Product list -->
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-1.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Nikon Coolpix L320</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-2.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Samsung Galaxy S4</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-3.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Asus Ultra Notebook</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <!-- Product list -->
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-1.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Nikon Coolpix L320</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-2.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Samsung Galaxy S4</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-4">
-                                                <div class="wp-block product">
-                                                    <figure>
-                                                        <img alt="" src="images/prv/product-3.jpg" class="img-responsive img-center">
-                                                    </figure>
-                                                    <h2 class="product-title"><a href="">Asus Ultra Notebook</a></h2>
-                                                    <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisg elitm Ut tincidunt purus iaculis
-                                                    </p>
-                                                    <div class="wp-block-footer">
-                                                        <span class="price pull-left">RON 233.33</span>
-                                                        <a href="#" class="btn btn-sm btn-base btn-icon btn-cart pull-right">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="tab-4">
-                                    <div class="tab-body" style="padding-bottom: 0;">
-                                        <h3 class="title title-lg">My Ratings</h3>
-                                        <p class="mb-20">How are you doing as a philanthropist?</p>
-                                    
-                                    <table class="table table-orders table-bordered table-striped table-responsive no-margin">
-                                        <tbody>
-                                            <tr>
-                                                <th>User</th>
-                                                <th>Rating</th>
-                                                <th>Comment</th>
-                                            </tr>
+                                        <h3 class="title title-lg">User Ratings</h3>
+                                        <p class="mb-20">What do others say about this user?</p>
+                                        Ratings:<br />
+                                        {{viewed_user_info.average_rating}} (from {{viewed_user_info.num_ratings}} users)<br /><br />
                                         
-                                            <tr>
-                                                <td><a href="#">230320</a></td>
-                                                <td>23-08-2014</td>
-                                                <td>RON 2000.99</td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">230320</a></td>
-                                                <td>23-08-2014</td>
-                                                <td>RON 2000.99</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        Rate:<br />
+                                        <a href="{% url 'rate' viewed_user_info.user.id 1 %}">1</a>&nbsp;
+                                        <a href="{% url 'rate' viewed_user_info.user.id 2 %}">2</a>&nbsp;
+                                        <a href="{% url 'rate' viewed_user_info.user.id 3 %}">3</a>&nbsp;
+                                        <a href="{% url 'rate' viewed_user_info.user.id 4 %}">4</a>&nbsp;
+                                        <a href="{% url 'rate' viewed_user_info.user.id 5 %}">5</a><br /><br />
+                                        Comment:<br />
+                                        {% for comment in user_comments %}
+                                        {{comment.text}}<br />
+                                        {% endfor %}
+                                        <form action="/potluck/comment/{{viewed_user_info.user.id}}" method="post">
+                                            {% csrf_token %}
+                                        <textarea rows=2 cols=75 name="text"></textarea>
+                                        <input type="submit" value="Submit" />
+                                        </form>
                                     </div>
                                 </div>
 

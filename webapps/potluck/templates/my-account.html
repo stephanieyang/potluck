@@ -1,21 +1,4 @@
-<!-- profile.html -->
-{% if user_info.avatar %}
-<img src="{% url 'avatar' user_info.user.id %}" alt="{{user_info.user.username}}">
-{% else %}
-No avatar uploaded
-{% endif %}
-<form enctype="multipart/form-data" action="/potluck/edit_profile/" method="post">
-<tr><th><label for="id_avatar">Avatar:</label></th><td><input id="id_avatar" name="avatar" type="file" /></td></tr><br />
-<input type="checkbox" name="show_email" value="show_email"> Show my e-mail<br />
-<tr><th><label for="id_phone">Phone:</label></th><td><input id="id_phone" maxlength="12" name="phone" type="text" /></td></tr><br />
-<tr><th><label for="id_current_password">Current password:</label></th><td><input id="id_current_password" maxlength="200" name="current_password" type="password" /></td></tr><br />
-<tr><th><label for="id_new_password_1">New password 1:</label></th><td><input id="id_new_password_1" maxlength="200" name="new_password_1" type="password" /></td></tr><br />
-<tr><th><label for="id_new_password_2">New password 2:</label></th><td><input id="id_new_password_2" maxlength="200" name="new_password_2" type="password" /></td></tr><br />
-<input type="submit" value="Submit" />
-    {% csrf_token %}
-</form>
-
-* At least one of e-mail and phone number must be displayed to users for contact purposes.
+<!-- my-account.html -->
 <!--
 For this we want:
 - display a form containing the user's current contact info
@@ -24,3 +7,128 @@ For this we want:
 Likely to be passed to index:
 - user_info - UserInfo for the logged-in user
  -->
+ 
+ {% extends "base.html" %}
+
+{% block content %}
+
+   <!-- MAIN CONTENT -->
+        <div class="pg-opt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>User account</h2>
+                </div>
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Pages</a></li>
+                        <li class="active">User account</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="slice bg-white">
+        <div class="wp-section user-account">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="user-profile-img">
+                            <img src="{% url 'avatar' user_info.id}">
+                        </div>
+                  
+                    </div>
+                    <div class="col-md-9">                     
+                        <div class="tabs-framed">
+                            <ul class="tabs clearfix">
+                                <li class="active"><a href="#tab-1" data-toggle="tab">My Info</a></li>
+                                <li><a href="#tab-2" data-toggle="tab">My Items</a></li>
+                                <li><a href="#tab-3" data-toggle="tab">Change Password</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="tab-1">
+                                    <div class="tab-body">
+                                        <dl class="dl-horizontal style-2">
+                                            <h3 class="title title-lg">My Info</h3><br>
+                                            <form enctype="multipart/form-data" action="{% url 'my_account' %}" method="post">
+                                            <dt>Avatar</dt>
+                                            <dd>
+                                                {% if user_info.avatar %}
+                                                    <img src="{% url 'avatar' user_info.id %}" alt="{{user_info.username}}" /><br />
+                                                {% endif %}
+                                                <input id="id_avatar" name="avatar" type="file" />
+                                            </dd>
+                                            <hr>
+                                            <dt>Phone</dt>
+                                            <dd>
+                                                <input name="phone" type="text" value="{{user_info.phone}}" />
+                                            </dd>
+                                            <hr>
+                                            <dt>Public Email?</dt>
+                                            <dd>
+                                                {% if user_info.show_email %}
+                                                    <input type="checkbox" name="show_email" value="show_email" checked=true> Show my e-mail<br />
+                                                {% else %}
+                                                    <input type="checkbox" name="show_email" value="show_email"> Show my e-mail<br />
+                                                {% endif %}
+                                                
+                                                * At least one of e-mail and phone number must be displayed to users for contact purposes.
+                                            </dd>
+                                            <input type="submit" value="Submit" />
+                                            {% csrf_token %}
+                                            </form>
+                                        </dl>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="tab-2">
+                                    <div class="tab-body" style="padding-bottom: 0;">
+                                        <h3 class="title title-lg">My Items</h3>
+                                        <p class="mb-20">Keep track of all your sales</p>
+                                    
+                                     {% for item in items %}
+                                        {{item.name}}: {{item.price}} <a href="{% url 'edit_sale' item.id %}">Edit</a><br />
+                                     {% endfor %}
+                                    </div>
+                                </div>
+
+                                
+                                
+                                <div class="tab-pane fade in" id="tab-3">
+                                    <div class="tab-body">
+                                        <dl class="dl-horizontal style-2">
+                                            <h3 class="title title-lg">Change Password</h3><br>
+                                            <form action="{% url 'change_password' %}" method="post">
+                                            <dt>Current Password</dt>
+                                            <dd>
+                                                <input maxlength="200" name="current_password" type="password" />
+                                            </dd>
+                                            <hr>
+                                            <dt>New Password</dt>
+                                            <dd>
+                                                <input maxlength="200" name="new_password_1" type="password" />
+                                            </dd>
+                                            <hr>
+                                            <dt>Retype New Password</dt>
+                                            <dd>
+                                                <input maxlength="200" name="new_password_2" type="password" />
+                                            </dd>
+                                            <input type="submit" value="Submit" />
+                                            {% csrf_token %}
+                                            </form>
+                                        </dl>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %} 

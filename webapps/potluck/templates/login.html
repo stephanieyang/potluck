@@ -67,48 +67,6 @@
                     <img src="/static/images/potluck_logo.png" alt="Potluck">
                 </a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden-md hidden-lg">
-                        <div class="bg-light-gray">
-                            <form class="form-horizontal form-light p-15" role="form">
-                                <div class="input-group input-group-lg">
-                                    <input type="text" class="form-control" placeholder="I want to find ...">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-white" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
-
-                    <li class="dropdown dropdown-meganav mega-dropdown-fluid">
-                        <a href="/potluck/">Home</a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a href="{% url 'buy' %}" class="dropdown-toggle">Buy</a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a href="{% url 'sell' %}" class="dropdown-toggle">Sell</a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account</a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="{% url 'profile' user_info.user.id %}">Profile</a>
-                                <ul class="dropdown-menu">
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a href="#">Logout</a>
-                            </li>
-                        </ul>
-                    </li>
 
                 </ul>
                

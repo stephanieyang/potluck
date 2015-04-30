@@ -9,6 +9,7 @@ class UserInfo(models.Model):
     # Use Django forms
     # username = models.CharField(max_length=50)
     user = models.ForeignKey(User) # stores additional info such as username, email
+    show_email = models.BooleanField(default=True)
     avatar = models.ImageField(upload_to="user-icons",blank=True,default="") # optional avatar that can be uploaded
     phone = models.CharField(max_length=12, default="", blank=True) # optional phone number
     num_ratings = models.IntegerField(default=0)    # number of users who have rated this user

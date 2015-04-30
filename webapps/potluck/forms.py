@@ -116,14 +116,7 @@ class UserProfileInfoForm(forms.Form):
     avatar = forms.FileField(required=False);
     phone = forms.CharField(min_length=10,max_length=15, required=False)
     show_email = forms.BooleanField(required=False)
-    current_password = forms.CharField(max_length = 200,  
-                                widget = forms.PasswordInput(), required=False)
-    new_password_1 = forms.CharField(max_length = 200, 
-                                widget = forms.PasswordInput(), required=False)
-    new_password_2 = forms.CharField(max_length = 200, 
-                                widget = forms.PasswordInput(), required=False)  
-    # Customizes form validation for properties that apply to more
-    # than one field.  Overrides the forms.Form.clean function.
+    
     def clean(self):
         # Calls our parent (forms.Form) .clean function, gets a dictionary
         # of cleaned data as a result
@@ -135,11 +128,24 @@ class UserProfileInfoForm(forms.Form):
         if (len(phone) == 0) and (not show_email):
             raise forms.ValidationError("At least one of phone number and email must be displayed.")
 
+        # Generally return the cleaned data we got from our parent.
+        return cleaned_data
+
+class ChangePasswordForm(forms.Form):
+    current_password = forms.CharField(max_length = 200,  
+                                widget = forms.PasswordInput())
+    new_password_1 = forms.CharField(max_length = 200, 
+                                widget = forms.PasswordInput())
+    new_password_2 = forms.CharField(max_length = 200, 
+                                widget = forms.PasswordInput())
+    def clean(self):
+        cleaned_data = super(ChangePasswordForm, self).clean()
+        
         # Check the passwords
         current_password = cleaned_data.get('current_password')
         new_password_1 = cleaned_data.get('new_password_1')
         new_password_2 = cleaned_data.get('new_password_2')
-        # if both new password fields have been filled in...
+        # both if new password fields have been filled in...
         if new_password_1 and new_password_2:
           # check that they're the same
           if new_password_1 != new_password_2:
@@ -147,19 +153,9 @@ class UserProfileInfoForm(forms.Form):
           # and that the user has entered the correct current password
           if not current_password:
             raise forms.ValidationError("Must provide current password.")
-          # can this be done here? requires information about the user, which required request.user in views.py
-          else:
-            if self.instance:
-              user = authenticate(username=self.instance.username, password=current_password)
-              if user is None:
-                raise forms.ValidationError("Current password entered incorrectly.")
-            else:
-              raise forms.ValidationError("Form error: could not get current user instance.")
 
         # Generally return the cleaned data we got from our parent.
         return cleaned_data
-
-
 
 class ResetForm(forms.Form):
     username = forms.CharField(max_length = 20)

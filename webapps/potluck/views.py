@@ -94,6 +94,15 @@ def rate_user(request, id, rating): # DONE
     user_info = UserInfo.objects.get(user=request.user)
     rated_user = User.objects.get(id=id)
     rated_user_info = UserInfo.objects.get(user=rated_user)
+    
+    if int(rating) > 5 or int(rating) < 0: # avoid spoofed input
+        # do nothing
+        context['user_info'] = user_info
+        context['viewed_user_info'] = viewed_user_info
+        context['user_comments'] = user_comments
+        context['form'] = CommentForm()
+        return redirect('/potluck/profile/' + str(rated_user_info.user.id), context)
+        
     rated_user_info.num_ratings += 1
     rated_user_info.total_rating += float(rating)
     rated_user_info.average_rating = rated_user_info.total_rating/rated_user_info.num_ratings
@@ -248,14 +257,16 @@ def category(request, term):
     return render(request, 'buy.html', context)
     
 @login_required
-def edit_profile(request): # DONE
+def my_account(request): # DONE
     context = {}
     user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
+    user_items = SaleItem.objects.filter(seller=user_info)
+    context['items'] = user_items
     
     if request.method == 'GET':
-      context['form'] = UserProfileInfoForm()
-      return render(request, 'edit-profile.html', context)
+        context['form'] = UserProfileInfoForm()
+        return render(request, 'my-account.html', context)
     
     # POST - edit profile fields
     # Check the validity of the form data
@@ -263,28 +274,54 @@ def edit_profile(request): # DONE
     context['form'] = form
     if not form.is_valid():
         print form.errors
-        return render(request, 'edit-profile.html', context)
+        return render(request, 'my-account.html', context)
     
     if 'avatar' in request.FILES:
-      user_info.avatar = request.FILES['avatar']
+        user_info.avatar = request.FILES['avatar']
     
     print "editprofile - editing"
     # edit profile information
     #user_info.name = form.cleaned_data['name']
     user_info.phone = form.cleaned_data['phone']
     
-    # change password
+    user_info.show_email = form.cleaned_data['show_email']
+    
+    user_info.save()
+    
+    #return render(request, 'my-account.html', context)
+    return redirect('/potluck/profile/' + str(user_info.user.id), context)
+
+def change_password(request):
+    context = {}
+    user_info = UserInfo.objects.get(user=request.user)
+    context['user_info'] = user_info
+    
+    if request.method == 'GET':
+      context['form'] = ChangePasswordForm()
+      return render(request, 'my-account.html', context)
+    # POST
+    form = ChangePasswordForm(request.POST)
+    context['form'] = form
+    if not form.is_valid():
+        print form.errors
+        return render(request, 'my-account.html', context)
     current_password = form.cleaned_data['current_password']
     new_password_1 = form.cleaned_data['new_password_1']
     # no need to check most of the logic since we did that in validation, but we do need to check whether the fields have been filled in to begin with
     if current_password and new_password_1:
-      user = authenticate(username=user_info.username, password=current_password)
+      user = authenticate(username=user_info.user.username, password=current_password)
       if user is not None:
         request.user.set_password(form.cleaned_data['new_password_1'])
         request.user.save()
+      else:
+        errors = []
+        errors.append('Password was entered incorrectly.')
+        context['errors'] = errors
     user_info.save()
     
-    return render(request, 'edit-profile.html', context)
+    #return render(request, 'my-account.html', context)
+    return redirect('/potluck/profile/' + str(user_info.user.id), context)
+
     
 @login_required
 def search(request):
