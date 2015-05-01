@@ -156,7 +156,7 @@ def sell(request): # DONE?
     if (not form.is_valid()) or (not ('picture' in request.FILES)):
       print "sell: invalid form", form.errors
       context['form'] = form
-      return render(request, 'index.html', context)
+      return render(request, 'sell.html', context)
     print "sell: creating new item..."
     new_sale_item = SaleItem(seller=user_info,name=form.cleaned_data['name'],brand=form.cleaned_data['brand'],quantity=form.cleaned_data['quantity'],
       description=form.cleaned_data['description'],price=form.cleaned_data['price'],purchase_date=form.cleaned_data['purchase_date'],

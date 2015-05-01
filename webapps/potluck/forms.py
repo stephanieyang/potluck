@@ -13,6 +13,8 @@ class SellForm(forms.ModelForm):
         
     def clean(self):
         cleaned_data = super(SellForm, self).clean()
+        if not cleaned_data.get('price'):
+            raise forms.ValidationError("Please enter a valid price.")
         if len(str(cleaned_data.get('price')).split('.')[1]) > 2: # more than two decimal places
             raise forms.ValidationError("Please enter a valid price.")
         if len(str(cleaned_data.get('price')).split('.')[0]) > 3: # more than $999
