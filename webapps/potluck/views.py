@@ -171,7 +171,7 @@ def sell(request): # DONE?
     # new_sale_item = SaleItem(ingredient=form.cleaned_data['ingredient_name'], price = form.cleaned_data['price'], seller=user_info, expiration_date = form.cleaned_data['expiration_date'])
     # new_sale_item.save()
     # context['item'] = new_sale_item
-    return render(request, 'sell.html', context)
+    return redirect('/potluck/buy/', context)
     
 @login_required
 def selling(request): # DONE
@@ -486,12 +486,17 @@ def register(request):
 
     # POST
     # Check the validity of the form data
+    
+    print "views.py: register 1"
+    
     form = RegistrationForm(request.POST)
     context['form'] = form
     if not form.is_valid():
         print "invalid registration form"
         print form.errors
         return render(request, 'register.html', context)
+    
+    print "views.py: register 2"
     
     if not 'username' in request.POST or not request.POST['username']:
       errors.append('Username is required.')
@@ -500,6 +505,8 @@ def register(request):
         # field in case the form has errrors
       context['username'] = request.POST['username']
 
+    print "views.py: register 3"
+    
     # Creates the new user from the valid form data
     context['errors'] = form.errors
     if form.cleaned_data['phone']:
@@ -510,6 +517,8 @@ def register(request):
         new_user = User.objects.create_user(username=form.cleaned_data['username'],
                                         email=form.cleaned_data['email'],
                                         password=form.cleaned_data['password1'])
+    print "views.py: register 4"
+    
     new_user.is_active = False;
     new_user.save()
     
