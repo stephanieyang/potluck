@@ -97,7 +97,10 @@ Likely to be passed in:
                                     </figure>
                                     <h2 class="product-title">{{item.name}}</h2>
                                     <p>
-                                    {{item.description}} <a href="{% url 'profile' item.seller.user.id %}">{{item.seller}}</a> {{item.brand}} {{item.description}} {{item.purchase_date}} {{item.expiration_date}}
+                                        <a>{{item.brand}}</a> <br>
+                                        <a>Purchase Date: {{item.purchase_date}}</a> <br>
+                                        <a>Expiration Date: {{item.expiration_date}}</a>
+                                        <a>{{item.description}}</a>
                                     </p>
                                     <div class="wp-block-footer">
                                         <span class="price pull-left">${{item.price}}</span>
