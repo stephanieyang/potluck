@@ -59,7 +59,8 @@
                                 <h2>Create your own account</h2>
                             </div>
                             <div class="form-body">
-                                <form action="" id="frmRegister" class="sky-form">                                    
+                                <form action="{% url 'register' %}" method="post" id="frmRegister" class="sky-form">                                    
+                                    {% csrf_token %}
                                     <fieldset class="no-padding">           
                                         <section class=""> 
                                             <div class="row">
@@ -89,7 +90,7 @@
                                                     <div class="form-group">
                                                         <label class="input">
                                                             <i class="icon-append fa fa-lock"></i>
-                                                            <input type="text" name="username" placeholder="Password">
+                                                            <input type="password" name="password1" placeholder="Password">
                                                             <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
                                                         </label>
                                                     </div>               
@@ -98,7 +99,7 @@
                                                     <div class="form-group">
                                                         <label class="input">
                                                             <i class="icon-append fa fa-lock"></i>
-                                                            <input type="email" name="email" placeholder="Password">
+                                                            <input type="password" name="password2" placeholder="Password">
                                                             <b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
                                                         </label>
                                                     </div>               
@@ -107,20 +108,6 @@
                                         </section>
                                         
                                         <section class="no-margin">
-                                            <div class="row">
-                                                <section class="col-xs-6">
-                                                    <label class="input">
-                                                        <i class="icon-append fa fa-user"></i>
-                                                        <input type="text" name="fname" placeholder="First name">
-                                                    </label>
-                                                </section>
-                                                <section class="col-xs-6">
-                                                    <label class="input">
-                                                        <i class="icon-append fa fa-user"></i>
-                                                        <input type="text" name="lname" placeholder="Last name">
-                                                    </label>
-                                                </section>
-                                            </div> 
                                             <div class="row">
 
                                                 <section class="col-xs-6">
