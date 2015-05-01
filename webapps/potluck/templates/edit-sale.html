@@ -1,23 +1,151 @@
-<!-- edit-sale.html -->
-<!--
-For this we want:
-- Use the same info as the form on sell.html, but populate the form with the data from {{item}}
-- Also add a space to display the photo
+ {% extends "base.html" %}
 
-Likely to be passed in:
-- item (of type SaleItem)
-- user_info (for logged-in user)
- -->
-<form enctype="multipart/form-data" action="/potluck/edit_sale/{{item.id}}" method="post">
-<tr><th><label for="id_brand">Brand:</label></th><td><input id="id_brand" maxlength="255" name="brand" type="text" /></td></tr>
-<tr><th><label for="id_quantity">Quantity:</label></th><td><input id="id_quantity" maxlength="255" name="quantity" type="text" /></td></tr>
-<tr><th><label for="id_description">Description:</label></th><td><input id="id_description" maxlength="500" name="description" type="text" /></td></tr>
-<tr><th><label for="id_price">Price:</label></th><td><input id="id_price" name="price" step="0.01" type="number" /></td></tr>
-<tr><th><label for="id_purchase_date">Purchase date:</label></th><td><input id="id_purchase_date" name="purchase_date" type="text" /></td></tr>
-<tr><th><label for="id_expiration_date">Expiration date:</label></th><td><input id="id_expiration_date" name="expiration_date" type="text" value="2015-04-08" /><input id="initial-id_expiration_date" name="initial-expiration_date" type="hidden" value="2015-04-08 07:56:24+00:00" /></td></tr>
-<tr><th><label for="id_picture">Picture:</label></th><td><input id="id_picture" name="picture" type="file" /></td></tr>
-<input type="submit" value="Submit" />
-    {% csrf_token %}
-</form>
+ {% block content %}
+    
+    <!-- MAIN CONTENT -->
+        <div class="pg-opt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Item</h2>
+                </div>
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">My Account</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li class="active">Edit</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <section class="slice bg-white">
+        <div class="wp-section shop">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                        	<div class="col-md-5">
+                                <div class="product-info">
+                                    <h3 class="product-title">{{item.name}}</h3>
+                                    <span class="clearfix"></span> <br>
+                                    <img src="{% url 'picture' item.id %}" alt="{{item.name}}" width="300px"  class="img-responsive img-center" />
+                                    <p>
+                                    {{item.description}}
+                                    </p>
+                                    <div class="product-price">
+                                        <span class="price">${{item.price}}</span>
+                                    </div>
+                                    
+                                    <hr>
+                                    <div class="product-short-info">
+                                        <p><strong>Quantity</strong>: {{item.quantity}}</p>
+                                        <p><strong>Brand</strong>: {{item.brand}}</p>
+                                        <p><strong>Purchase Date</strong>: {{item.purchase_date}}</p>
+                                        <p><strong>Expiration Date</strong>: {{item.expiration_date}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="wp-block default user-form user-form-alpha no-margin">
+	                            <div class="form-body">
+	                            <form enctype="multipart/form-data" action="/potluck/edit_sale/{{item.id}}" method="post">
+	                                {% csrf_token %}
+	                                    <fieldset class="no-padding">           
+	                                        <section class="">
+	                                            <div class="row">
+	                                                <div class="col-xs-6">
+	                                                    <div class="form-group">
+	                                                        <label class="input">
+	                                                            Name of Produce *<br>
+	                                                            <input maxlength="255" name="name" type="text" placeholder="ex) Fresh Oranges" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                        </label>
+	                                                    </div>               
+	                                                </div>
+	                                                <div class="col-xs-6">
+	                                                    <div class="form-group">
+	                                                        <label class="input">
+	                                                            Brand <br>
+	                                                            <input maxlength="255" name="brand" type="text" placeholder="ex) Local Farmer's Market"><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                        </label>
+	                                                    </div>               
+	                                                </div>
+	                                            </div>   
+	                                            <div class="row">
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label class="input">
+	                                                            Quantity *<br>
+	                                                            <input maxlength="255" name="quantity" type="text" placeholder="ex) 3" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                        </label>
+	                                                    </div>               
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label class="input">
+	                                                            Description <br>
+	                                                            <textarea maxlength="500" name="description" type="text" placeholder="ex) Fresh oranges premium. Very sweet and tangy!"></textarea><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                        </label>
+	                                                    </div>               
+	                                                </div>
+	                                            </div> 
+	                                            <div class="row">
+	                                                <div class="col-xs-6">
+	                                                    <div class="form-group">
+	                                                        <label class="input">
+	                                                            Price $ *<br>
+	                                                            <input name="price" step="0.01" type="number" placeholder="ex) 4.99" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                        </label>
+	                                                    </div>               
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label class="input">
+	                                                            Purchase Date <br>
+	                                                            <input name="purchase_date" type="date" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                        </label>
+	                                                    </div>               
+	                                                </div>
+	                                            </div> 
+	                                            <div class="row">
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label class="input">
+	                                                            Expiration Date *<br>
+	                                                            <input name="expiration_date" type="date"/><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                        </label>
+	                                                    </div>               
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	                                                        <label class="input">
+	                                                            Image *<br>
+	                                                            <input id="picture" name="picture" type="file" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                        </label>
+	                                                    </div>               
+	                                                </div>
+	                                            </div> 
+	                                            <div class="row">
+	                                                    <p class="pull-left"> *Required fields </p>
+	                                                    <button type="submit" value="Submit" class="btn btn-alt btn-icon btn-icon-right btn-icon-go pull-right" type="submit">
+	                                                        <span>Save Edit</span>
+	                                                    </button>
+	                                            </div>
+	                                        </section>
+	                                    </fieldset>
+	                                </form>
+	                        	</div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
+{% endblock %}

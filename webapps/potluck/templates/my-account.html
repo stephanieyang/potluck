@@ -90,9 +90,11 @@ Likely to be passed to index:
                                         <p class="mb-20">Keep track of all your sales</p>
                                     
                                      {% for item in items %}
-                                        {{item.name}}: {{item.price}} <a href="{% url 'edit_sale' item.id %}">Edit</a><br />
+                                        {{item.quantity}} {{item.name}} 
+                                        <a href="{% url 'edit_sale' item.id %}" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a><br /><hr>
                                      {% endfor %}
                                     </div>
+                                    <br>
                                 </div>
 
                                 
