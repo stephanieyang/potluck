@@ -72,6 +72,11 @@ Likely to be passed in:
                                 <h2>Sell your groceries</h2>
                             </div>
                             <div class="form-body">
+                            {% if form.errors %}
+                                <span style="color: red">
+                                {{ form.errors }}
+                                </span>
+                            {% endif %}
                             <form enctype="multipart/form-data" action="/potluck/sell/" method="post">
                                 {% csrf_token %}
                                     <fieldset class="no-padding">           
