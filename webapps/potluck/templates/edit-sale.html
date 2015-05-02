@@ -33,17 +33,23 @@
                                     <span class="clearfix"></span> <br>
                                     <img src="{% url 'picture' item.id %}" alt="{{item.name}}" width="300px"  class="img-responsive img-center" />
                                     <p>
+                                    {% if item.description %}
                                     {{item.description}}
+                                    {% endif %}
                                     </p>
                                     <div class="product-price">
-                                        <span class="price">${{item.price}}</span>
+                                        <span class="price">${{item.price|floatformat:2}}</span>
                                     </div>
                                     
                                     <hr>
                                     <div class="product-short-info">
                                         <p><strong>Quantity</strong>: {{item.quantity}}</p>
+                                        {% if item.brand %}
                                         <p><strong>Brand</strong>: {{item.brand}}</p>
+                                        {% endif %}
+                                        {% if item.purchase_date %}
                                         <p><strong>Purchase Date</strong>: {{item.purchase_date}}</p>
+                                        {% endif %}
                                         <p><strong>Expiration Date</strong>: {{item.expiration_date}}</p>
                                     </div>
                                 </div>
@@ -96,7 +102,7 @@
 	                                                    <div class="form-group">
 	                                                        <label class="input">
 	                                                            Price $ *<br>
-	                                                            <input name="price" step="0.01" type="number"  value="{{item.price}}" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
+	                                                            <input name="price" step="0.01" type="number"  value="{{item.price|floatformat:2}}" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
 	                                                        </label>
 	                                                    </div>               
 	                                                </div>
@@ -131,6 +137,19 @@
 	                                                    <p class="pull-left"> *Required fields </p>
 	                                                    <button type="submit" value="Submit" class="btn btn-alt btn-icon btn-icon-right btn-icon-go pull-right" type="submit">
 	                                                        <span>Save Edit</span>
+	                                                    </button>
+	                                            </div>
+	                                        </section>
+	                                    </fieldset>
+	                                </form>
+                                                      <br /><br />
+	                            <form action="{% url 'delete_item' item.id %}" method="post">
+	                                {% csrf_token %}
+	                                    <fieldset class="no-padding">           
+	                                        <section class=""> 
+	                                            <div class="row">
+	                                                    <button value="Submit" class="btn btn-alt btn-icon btn-icon-right btn-icon-go pull-right" type="submit">
+	                                                        <span>Delete Item/Item Has Been Sold</span>
 	                                                    </button>
 	                                            </div>
 	                                        </section>
