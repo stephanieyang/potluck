@@ -36,7 +36,11 @@ Likely to be passed to index:
                 <div class="row">
                     <div class="col-md-3">
                         <div class="user-profile-img">
-                            <img src="{% url 'avatar' user_info.id}">
+                          {% if user_info.avatar %}
+                              <img src="{% url 'avatar' user_info.id %}" alt="{{user_info.username}}" /><br />
+                          {% else %}
+                              <img src="/static/images/avatar.png" alt="{{viewed_user_info.user.username}}" />
+                          {% endif %}
                         </div>
                   
                     </div>
@@ -58,6 +62,8 @@ Likely to be passed to index:
                                             <dd>
                                                 {% if user_info.avatar %}
                                                     <img src="{% url 'avatar' user_info.id %}" alt="{{user_info.username}}" /><br />
+                                                {% else %}
+                                                    <img src="/static/images/avatar.png" alt="{{viewed_user_info.user.username}}" />
                                                 {% endif %}
                                                 <input id="id_avatar" name="avatar" type="file" />
                                             </dd>
@@ -90,7 +96,7 @@ Likely to be passed to index:
                                         <p class="mb-20">Keep track of all your sales</p>
                                     
                                      {% for item in items %}
-                                        {{item.quantity}} {{item.name}} 
+                                        {{item.quantity}} {{item.name}} - {{item.price|floatformat:2}}
                                         <a href="{% url 'edit_sale' item.id %}" class="btn btn-xs btn-base btn-icon fa-edit pull-right"><span>Edit</span></a><br /><hr>
                                      {% endfor %}
                                     </div>

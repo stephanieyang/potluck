@@ -14,11 +14,14 @@ class SellForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super(SellForm, self).clean()
         if not cleaned_data.get('price'):
-            raise forms.ValidationError("Please enter a valid price.")
-        if len(str(cleaned_data.get('price')).split('.')[1]) > 2: # more than two decimal places
-            raise forms.ValidationError("Please enter a valid price.")
-        if len(str(cleaned_data.get('price')).split('.')[0]) > 3: # more than $999
+            raise forms.ValidationError("Price is a required field.")
+        if cleaned_data.get('price') < 0:
             raise forms.ValidationError("Please enter a price from $0.00-$999.99.")
+        if '.' in str(cleaned_data.get('price')): # $XXX instead of $XXX.XX
+            if len(str(cleaned_data.get('price')).split('.')[1]) > 2: # more than two decimal places
+                raise forms.ValidationError("Please enter a valid price.")
+            if len(str(cleaned_data.get('price')).split('.')[0]) > 3: # more than $999
+                raise forms.ValidationError("Please enter a price from $0.00-$999.99.")
         return cleaned_data
         
 class EditSaleForm(forms.ModelForm):

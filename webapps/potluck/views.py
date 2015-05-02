@@ -28,7 +28,8 @@ from datetime import date
 @login_required
 def home(request):
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo,user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     purge_old_items()
     return render(request, 'index.html', context)
@@ -42,7 +43,8 @@ def purge_old_items():
 @login_required
 def buy(request): # DONE?
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     # for now, display items put up for sale in the past week
     current_time = datetime.datetime.now()
@@ -57,12 +59,27 @@ def get_rows(item_set):
     full_item_list = list(item_set)
     rows = [full_item_list[i:i+items_per_row] for i in xrange(0,len(full_item_list),items_per_row)]
     return rows
-    
+
+@login_required
+def delete_item(request, id): 
+    print "delete_item: start"
+    context = {}
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
+    item = get_object_or_404(SaleItem, id=id)
+    #item = SaleItem.objects.get(id=id)
+    context['user_info'] = user_info
+    context['item'] = item
+    item.delete()
+    return redirect('/potluck/my_account/#tab-2', context)
+
 @login_required
 def edit_sale(request, id): # DONE
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
-    item = SaleItem.objects.get(id=id)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
+    item = get_object_or_404(SaleItem,id=id)
+    #item = SaleItem.objects.get(id=id)
     context['user_info'] = user_info
     context['item'] = item
     
@@ -91,9 +108,11 @@ def edit_sale(request, id): # DONE
 
 def rate_user(request, id, rating): # DONE
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
-    rated_user = User.objects.get(id=id)
-    rated_user_info = UserInfo.objects.get(user=rated_user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
+    rated_user = get_object_or_404(User,id=id)
+    rated_user_info = get_object_or_404(UserInfo,user=rated_user)
+    #rated_user_info = UserInfo.objects.get(user=rated_user)
     
     if int(rating) > 5 or int(rating) < 0: # avoid spoofed input
         # do nothing
@@ -119,9 +138,12 @@ def rate_user(request, id, rating): # DONE
 
 def comment_on_user(request, id): # DONE
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
-    subject_user = User.objects.get(id=id)
-    subject_user_info = UserInfo.objects.get(user=subject_user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
+    subject_user = get_object_or_404(User, id=id)
+    #subject_user = User.objects.get(id=id)
+    subject_user_info = get_object_or_404(UserInfo, user=subject_user)
+    #subject_user_info = UserInfo.objects.get(user=subject_user)
     form = CommentForm(request.POST)
     if not form.is_valid():
       print "comment_on_user: invalid form", form.errors
@@ -143,7 +165,8 @@ def comment_on_user(request, id): # DONE
 def sell(request): # DONE?
     # What happens if you try to submit without a picture?
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     
     if request.method == 'GET':
@@ -176,7 +199,8 @@ def sell(request): # DONE?
 @login_required
 def selling(request): # DONE
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     items = SaleItem.objects.filter(seller=user_info)
     context['user_info'] = user_info
     context['items'] = items
@@ -193,7 +217,8 @@ def selling(request): # DONE
 @login_required
 def profile(request, id): # DONE
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     viewed_user_info = UserInfo.objects.get(user__id=id)
     user_comments = UserComment.objects.filter(subject=viewed_user_info.user)
     user_items = SaleItem.objects.filter(seller=user_info)
@@ -206,7 +231,8 @@ def profile(request, id): # DONE
 
 def slash_price(request, id, amt): # DONE
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     item = SaleItem.objects.get(id=id)
     amt = int(amt)
     newProportion = (100.0-amt)/100.0
@@ -216,7 +242,8 @@ def slash_price(request, id, amt): # DONE
 
 def category(request, term):
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     
     keywords = []
@@ -259,7 +286,8 @@ def category(request, term):
 @login_required
 def my_account(request): # DONE
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     user_items = SaleItem.objects.filter(seller=user_info)
     context['items'] = user_items
@@ -293,7 +321,8 @@ def my_account(request): # DONE
 
 def change_password(request):
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     
     if request.method == 'GET':
@@ -326,7 +355,8 @@ def change_password(request):
 @login_required
 def search(request):
     context = {}
-    user_info = UserInfo.objects.get(user=request.user)
+    user_info = get_object_or_404(UserInfo, user=request.user)
+    #user_info = UserInfo.objects.get(user=request.user)
     context['user_info'] = user_info
     
     #if request.method == 'GET':
@@ -473,7 +503,7 @@ def resetpassword_check(request, username):
     else:
         return render(request,'reset-password-confirm.html',context)
         
-        
+      
 @transaction.atomic    
 def register(request):
     print "views.py: register"

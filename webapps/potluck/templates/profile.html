@@ -27,10 +27,10 @@
                     <div class="col-md-3">
                         <div class="user-profile-img">
                             <dd>
-                                {% if viewed_user_info.avatar %}
+                                {% if viewed_user_info.avatar.name %}
                               		<img src="{% url 'avatar' viewed_user_info.id %}" alt="{{viewed_user_info.user.username}}" width="100px" />
                                 {% else %}
-                                  <img src="/static/img/avatar.png" alt="{{viewed_user_info.user.username}}" />
+                                  <img src="/static/images/avatar.png" alt="{{viewed_user_info.user.username}}" />
                                 {% endif %}
                             </dd>
                         </div>
@@ -48,7 +48,7 @@
                                 <div class="tab-pane fade in active" id="tab-1">
                                     <div class="tab-body">
                                         <dl class="dl-horizontal style-2">
-                                            <h3 class="title title-lg">Personal information</h3><br>
+                                            <h3 class="title title-lg">User Information</h3><br>
                                             <dt>&nbsp;</dt>
                                             <dt>Username</dt>
                                             <dd>
@@ -80,11 +80,23 @@
                                 <div class="tab-pane fade" id="tab-2">
                                     <div class="tab-body" style="padding-bottom: 0;">
                                         <h3 class="title title-lg">User Sales</h3>
-                                        <p class="mb-20">Items this user is selling</p>
+                                        <p class="mb-20">Current Inventory</p>
                                     
                                      {% for item in items %}
-                                        {{item.name}}: {{item.price}}<br />
-                                        <img src="{% url 'picture' item.id %}" alt="{{item.name}}" />
+                                        <span class="title"><b>{{item.name}}</b></span><br />
+                                        <img src="{% url 'picture' item.id %}" alt="{{item.name}}" height="200px" /><br />
+                                        <i>Price:</i> {{item.price|floatformat:2}}<br />
+                                        <i>Quantity:</i> {{item.quantity}}<br />
+                                        {% if item.brand %}
+                                        <i>Brand:</i> {{item.brand}}<br />
+                                        {% endif %}
+                                        {% if item.description %}
+                                        <i>Description:</i> {{item.description}}<br />
+                                        {% endif %}
+                                        {% if item.purchase_date %}
+                                        <i>Purchase Date:</i> {{item.purchase_date}}<br />
+                                        {% endif %}
+                                        <i>Expiration Date:</i> {{item.expiration_date}}<br />
                                         <br /><br />
                                      {% endfor %}
                                     </div>
@@ -94,23 +106,30 @@
                                     <div class="tab-body">
                                         <h3 class="title title-lg">User Ratings</h3>
                                         <p class="mb-20">What do others say about this user?</p>
-                                        Ratings:<br />
-                                        {{viewed_user_info.average_rating}} (from {{viewed_user_info.num_ratings}} users)<br /><br />
+                                        <h5 class="title">Ratings:</h5>
+                                        <b>{{viewed_user_info.average_rating}}</b> <i>(from {{viewed_user_info.num_ratings}} users)</i><br /><br />
                                         
-                                        Rate:<br />
-                                        <a href="{% url 'rate' viewed_user_info.user.id 1 %}">1</a>&nbsp;
-                                        <a href="{% url 'rate' viewed_user_info.user.id 2 %}">2</a>&nbsp;
-                                        <a href="{% url 'rate' viewed_user_info.user.id 3 %}">3</a>&nbsp;
-                                        <a href="{% url 'rate' viewed_user_info.user.id 4 %}">4</a>&nbsp;
-                                        <a href="{% url 'rate' viewed_user_info.user.id 5 %}">5</a><br /><br />
-                                        Comment:<br />
-                                        {% for comment in user_comments %}
-                                        {{comment.text}}<br />
-                                        {% endfor %}
+                                        <h5 class="title">Rate:</h5>
+                                        <b><a href="{% url 'rate' viewed_user_info.user.id 1 %}">1</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="{% url 'rate' viewed_user_info.user.id 2 %}">2</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="{% url 'rate' viewed_user_info.user.id 3 %}">3</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="{% url 'rate' viewed_user_info.user.id 4 %}">4</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="{% url 'rate' viewed_user_info.user.id 5 %}">5</a></b><br /><br />
+                                        <h5 class="title">Comments:</h5>
+                                        {% if not user_comments.all %}
+                                          Nobody has submitted comments on this user yet. Be the first?
+                                        {% else %}
+                                          {% for comment in user_comments %}
+                                          <b>{{comment.author.username}}:</b> {{comment.text}}<br />
+                                          <small>{{comment.time}}</small><br />
+                                          {% endfor %}
+                                        {%endif %}
+                                        <br /><br />
                                         <form action="/potluck/comment/{{viewed_user_info.user.id}}" method="post">
-                                            {% csrf_token %}
+                                        <h5 class="title">Comment:</h5>
                                         <textarea rows=2 cols=75 name="text"></textarea>
                                         <input type="submit" value="Submit" />
+                                            {% csrf_token %}
                                         </form>
                                     </div>
                                 </div>
