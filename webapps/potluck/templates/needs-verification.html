@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
-    <title>Potluck</title>
+    <title>Confirmation Needed for Potluck</title>
 
 
     <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css" type="text/css">
@@ -90,58 +90,13 @@
                     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                         <div class="wp-block default user-form user-form-alpha no-margin"> 
                             <div class="form-header">
-                                <h2>Retrieve Your Password</h2>
-                            </div>
-                            <div class="form-body">
-                                    {% if form.errors %}
-                                      {% for error in form.non_field_errors %}
-                                        <p style="color: red">
-                                        {{ error }}
-                                        </p>
-                                      {% endfor %}
-                                    {% endif %}
-                                  <form role="form" action="{% url 'reset' %}" method="post">
-                                    <fieldset>                  
-                                        <section>
-                                            <div class="form-group">
-                                                <label class="input">
-                                                    <i class="icon-append fa fa-user"></i>
-                                                    <input type="username" name="username" cvalue="{{username}}" class="form-control" placeholder="Username">
-                                                </label>
-                                            </div>     
-                                        </section>
-
-                                        <section>
-                                            <div class="form-group">
-                                                <label class="input">
-                                                    <i class="icon-append fa fa-lock"></i>
-                                                    <input style="margin-top: 5px;" type="text" name="email" class="form-control" placeholder="Email">
-                                                </label>
-                                            </div>     
-                                        </section> 
-
-
-                                        <section>
-
-                                        </section>
-                                    </fieldset>                                     
-                                    {% csrf_token %}
-                                
-                            </div>
-  
-                            <div class="form-footer">
-                              <div class="row">
-                                <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
-                                    <span>Retrieve Password</span>
-                                </button>
-
-                               <a href="{% url 'reset' %}" id="register" style="float: left; margin-left: 15px;">
-                                    Having trouble? Click Here to reset password
-                                </a>
+                                <h2>Confirmation Needed for Potluck</h2>
                             </div>
 
-                        </div>
-                         </form> 
+                            <div>
+                               A confirmation email has been sent to {{email}}.  Please click the link in that email to confirm your email address and complete your registation for Potluck.
+                            </div>
+                          </div>
                     </div>
                 </div>
             </div>
